@@ -7,7 +7,7 @@ const isProduction = process.env.NODE_ENV == 'production';
 
 
 const config = {
-   // mode: process.env.NODE_ENV || 'development',
+    mode: process.env.NODE_ENV || 'development',
     entry: './src/index.js',
     output: {
         path: path.resolve(__dirname, 'dist'),
