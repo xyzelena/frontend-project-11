@@ -80,6 +80,7 @@ const app = () => {
                 // const keys = Object.entries(err); 
                 //console.log(err.name); 
                 //['value', 'path', 'type', 'errors', 'params', 'inner', 'name', 'message']
+                console.log(err.type);
 
                 watchedState.rssForm.error = err.name;
 
