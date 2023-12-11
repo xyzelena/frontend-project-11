@@ -39,7 +39,7 @@ const app = () => {
         },
     };
 
-    const watchedState = onChangeState(initialState, input);
+    const watchedState = onChangeState(initialState, input, i18nInstance);
 
     elements.form.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -53,21 +53,21 @@ const app = () => {
         yup.setLocale({
             // use constant translation keys for messages without values
             mixed: {
-                url: 'urlNotCorrect',
+                url: 'ValidationError',
                 required: 'urlRequired',
-                notOneOf: 'urlNotOneOf',
+                notOneOf: 'TypeError',
                 default: 'fieldInvalid',
             },
         });
 
         const schema = yup.object().shape({
             url: yup.string()
-                // .url('url must be correct')
-                // .required('url must be required')
-                // .notOneOf(feeds, 'url must be uniq'),
-                .url()
-                .required()
-                .notOneOf(feeds, ''),
+                .url('url must be correct')
+                .required('url must be required')
+                .notOneOf(feeds, 'url must be uniq'),
+                // .url()
+                // .required()
+                // .notOneOf(feeds, ''),
         });
 
         const validateStatus = schema
@@ -77,9 +77,12 @@ const app = () => {
                 watchedState.rssForm.valid = true;
             })
             .catch((err) => {
-                //watchedState.rssForm.error = error.message;
+                // const keys = Object.entries(err); 
+                //console.log(err.name); 
+                //['value', 'path', 'type', 'errors', 'params', 'inner', 'name', 'message']
 
-                watchedState.rssForm.error = err.errors.map((err) => i18nInstance.t(`mistakes.${err.key}`));
+                watchedState.rssForm.error = err.name;
+
                 watchedState.rssForm.valid = false;
             });
 

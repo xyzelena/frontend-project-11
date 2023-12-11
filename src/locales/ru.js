@@ -1,10 +1,10 @@
 export default {
     translation: {
         mistakes: {
-            urlNotCorrect: 'Введен некорректный адрес',
+            ValidationError: 'Введен некорректный адрес',
             urlRequired: 'Необходимо указать адрес',
-            urlNotOneOf: 'Необходимо указать новый адрес',
-            fieldInvalid: 'Поле заполнено некорректно',
+            TypeError: 'Необходимо указать новый адрес',
+            fieldInvalid: 'Поле неправильно заполнено', 
         }
     },
 };

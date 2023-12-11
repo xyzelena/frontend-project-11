@@ -16,17 +16,21 @@ const renderValid = (input, value, prevValue) => {
     }
 };
 
-const renderErrors = (input, newError, valid) => {
+const renderErrors = (input, keyError, i18n) => {
+    const error = i18n.t(`mistakes.${keyError}`);
+
+    console.log(error); 
+
     const nextEl = input.nextElementSibling;
 
     if (nextEl !== null) {
-        nextEl.textContent = newError;
+        nextEl.textContent = error; 
         return;
     }
 
     const newFeedbackElement = document.createElement('div');
     newFeedbackElement.classList.add('invalid-feedback');
-    newFeedbackElement.textContent = newError;
+    newFeedbackElement.textContent = error;
     input.after(newFeedbackElement);
 };
 
@@ -34,14 +38,14 @@ const renderErrors = (input, newError, valid) => {
 // По сути, в представлении происходит отображение модели на страницу
 // Для оптимизации рендер происходит точечно в зависимости от того, какая часть модели изменилась
 // Функция возвращает функцию. 
-const render = (input, valid) => (path, value, prevValue) => {
+const render = (input, valid, i18n) => (path, value, prevValue) => {
     switch (path) {
         case 'rssForm.valid':
             renderValid(input, value, prevValue);
             break;
 
         case 'rssForm.error':
-            renderErrors(input, value);
+            renderErrors(input, value, i18n);
             break;
 
         default:
@@ -49,6 +53,6 @@ const render = (input, valid) => (path, value, prevValue) => {
     }
 };
 
-const onChangeState = (state, input) => onChange(state, render(input, state.rssForm.valid)); 
+const onChangeState = (state, input, i18n) => onChange(state, render(input, state.rssForm.valid, i18n)); 
 
 export default onChangeState; 
