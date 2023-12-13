@@ -19,8 +19,6 @@ const renderValid = (input, value, prevValue) => {
 const renderErrors = (input, keyError, i18n) => {
     const error = i18n.t(`mistakes.${keyError}`);
 
-    console.log(error); 
-
     const nextEl = input.nextElementSibling;
 
     if (nextEl !== null) {
@@ -36,8 +34,6 @@ const renderErrors = (input, keyError, i18n) => {
 
 // Представление не меняет модель.
 // По сути, в представлении происходит отображение модели на страницу
-// Для оптимизации рендер происходит точечно в зависимости от того, какая часть модели изменилась
-// Функция возвращает функцию. 
 const render = (input, valid, i18n) => (path, value, prevValue) => {
     switch (path) {
         case 'rssForm.valid':

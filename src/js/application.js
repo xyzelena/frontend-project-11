@@ -53,9 +53,9 @@ const app = () => {
         yup.setLocale({
             // use constant translation keys for messages without values
             mixed: {
-                url: 'ValidationError',
-                required: 'urlRequired',
-                notOneOf: 'TypeError',
+                url: 'url',
+                required: 'required',
+                notOneOf: 'notOneOf',
                 default: 'fieldInvalid',
             },
         });
@@ -65,9 +65,6 @@ const app = () => {
                 .url('url must be correct')
                 .required('url must be required')
                 .notOneOf(feeds, 'url must be uniq'),
-                // .url()
-                // .required()
-                // .notOneOf(feeds, ''),
         });
 
         const validateStatus = schema
@@ -78,11 +75,9 @@ const app = () => {
             })
             .catch((err) => {
                 // const keys = Object.entries(err); 
-                //console.log(err.name); 
                 //['value', 'path', 'type', 'errors', 'params', 'inner', 'name', 'message']
-                console.log(err.type);
 
-                watchedState.rssForm.error = err.name;
+                watchedState.rssForm.error = err.inner[0].type;
 
                 watchedState.rssForm.valid = false;
             });
