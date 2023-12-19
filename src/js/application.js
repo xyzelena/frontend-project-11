@@ -76,7 +76,7 @@ const app = () => {
             .validate(watchedState.rssForm.fields, { abortEarly: false })
             .then(() => {
 
-                axios.get(url)
+                axios.get(`https://allorigins.hexlet.app/get?url=${encodeURIComponent(url)}`)
                 .then(function (response) {
                   // handle success
                   console.log(response);
