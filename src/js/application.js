@@ -3,6 +3,8 @@ import i18next from 'i18next';
 import resources from '../locales/index.js';
 import axios from 'axios';
 import onChangeState from './View.js';
+import short from 'short-uuid';
+import { parseData } from './utilities.js';
 //import _ from 'lodash';
 
 const app = () => {
@@ -24,23 +26,32 @@ const app = () => {
         fields: {
             input: document.querySelector('.form-control'),
         },
+        feedback: document.querySelector('.feedback'),
         submit: document.querySelector('button[type="submit"]'),
+        posts: document.querySelector('.posts'),
+        feeds: document.querySelector('.feeds'),
     };
 
     const input = elements.fields.input;
 
     const initialState = {
         rssForm: {
-            valid: true,
+            valid: 'idle',
             fields: {
                 url: '',
             },
-            error: '',
+            error: null,
+        },
+        loadedFeeds: {
             feeds: [],
         },
+        loadedContent: {
+            posts: [],
+        },
+        // interface:{}, 
     };
 
-    const watchedState = onChangeState(initialState, input, i18nInstance);
+    const watchedState = onChangeState(initialState, elements, i18nInstance);
 
     elements.form.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -49,11 +60,7 @@ const app = () => {
 
         watchedState.rssForm.fields.url = url;
 
-        const feeds = Object.values(watchedState.rssForm.feeds);
-
-        // const feeds_1= watchedState.rssForm.feeds;
-
-        // console.log(feeds_1);
+        const feedsLinks = watchedState.loadedFeeds.feeds.map(feed => feed.link);
 
         yup.setLocale({
             // use constant translation keys for messages without values
@@ -69,69 +76,78 @@ const app = () => {
             url: yup.string()
                 .url('url must be correct')
                 .required('url must be required')
-                .notOneOf(feeds, 'url must be uniq'),
+                .notOneOf(feedsLinks, 'url must be uniq'),
         });
 
         const validateStatus = schema
             .validate(watchedState.rssForm.fields, { abortEarly: false })
-            .then(() => {
+            .then(() => axios.get(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(url)}`))
+            .then((response) => {
 
-                axios.get(`https://allorigins.hexlet.app/get?url=${encodeURIComponent(url)}`)
-                .then(function (response) {
-                  // handle success
-                  console.log(response);
-                })
-                .catch(function (error) {
-                  // handle error
-                  console.log(error);
-                })
-                .finally(function () {
-                  // always executed
+                const rawContents = response.data.contents;
+
+                if (rawContents === '') {
+                    throw new ReferenceError('noDataContents');
+                }
+
+                // const parser = new DOMParser();
+
+                // const parsedData = parser.parseFromString(rawContents, "text/xml");
+
+                const parsedData = parseData(rawContents); 
+
+                const titleFeed = parsedData.querySelector('title').textContent;
+                const descriptionFeed = parsedData.querySelector('description').textContent;
+
+                const newFeed = {
+                    id: short.generate(),
+                    title: titleFeed,
+                    description: descriptionFeed,
+                    link: url,
+                };
+
+                const items = [...parsedData.querySelectorAll('item')];
+
+                const newPosts = items.map((item) => {
+                    const titlePost = item.querySelector('title').textContent;
+                    const descriptionPost = item.querySelector('description').textContent;
+                    const linkPost = item.querySelector('link').textContent;
+
+                    return {
+                        id: short.generate(),
+                        idFeed: newFeed.id,
+                        title: titlePost,
+                        description: descriptionPost,
+                        link: linkPost,
+                    };
                 });
 
-                // fetch(`https://allorigins.hexlet.app/get?url=${encodeURIComponent(url)}`)
-                //     .then(response => {
-                //         if (response.ok) return response.json();
-                //         else {
-                //             watchedState.rssForm.error = 'networkError';
-                //         }
-                //         //throw new Error('Network response was not ok.');
-                //     })
-                //     // .then(data => console.log(data.contents));
+                watchedState.loadedFeeds.feeds.unshift(newFeed); 
 
-                //     .then(data => {
+                watchedState.loadedContent.posts = [...newPosts, ...watchedState.loadedContent.posts];
 
-                //         const parser = new DOMParser();
-                //         const doc = parser.parseFromString(stringContainingXMLSource, data.contents);
+                watchedState.rssForm.error = null;
 
-                //         console.log(doc);
+                watchedState.rssForm.valid = true;
 
-                //         const post = {
-                //             id: watchedState.rssForm.feeds.length + 1,
-                //             title: data.contents.title,
-                //             description: data.contents.description,
-                //         };
-
-                //         watchedState.rssForm.feeds.push(post);
-
-                //         watchedState.rssForm.valid = true;
-                //     });
-
-
-                // watchedState.rssForm.feeds.push(url);
-                // watchedState.rssForm.valid = true;
             })
             .catch((err) => {
-                // const keys = Object.entries(err); 
-                //['value', 'path', 'type', 'errors', 'params', 'inner', 'name', 'message']
+                // Как сделать иначе. Теперь любая ошибка в коде указывает на err.inner[0].type
 
-                watchedState.rssForm.error = err.inner[0].type;
+                if (err instanceof ReferenceError) {
+                    watchedState.rssForm.error = err.message;
+                } else {
+                    watchedState.rssForm.error = err.inner[0].type;
+                }
+                // const keysError = Object.entries(err); 
+                // //['value', 'path', 'type', 'errors', 'params', 'inner', 'name', 'message']
+
+                //watchedState.rssForm.error = err.inner[0].type ?? err.message; //почему не работает ??? 
 
                 watchedState.rssForm.valid = false;
             });
 
     });//end addEventListener
-
 };
 
 export default app;

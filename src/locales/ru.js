@@ -1,11 +1,23 @@
 export default {
     translation: {
         mistakes: {
-            url: 'Введен некорректный адрес',
-            required: 'Необходимо указать адрес',
-            notOneOf: 'Необходимо указать новый адрес',
-            fieldInvalid: 'Поле неправильно заполнено', 
-            networkError: 'Адрес не удалось загрузить', 
-        }
+            url: 'Ссылка должна быть валидным URL',
+            required: 'Необходимо указать URL',
+            notOneOf: 'Необходимо указать новый URL',
+            fieldInvalid: 'URL неправильно указан', 
+            noDataContents: 'Ресурс не содержит валидный RSS', 
+        },
+        confirmation: {
+            loaded: 'RSS успешно загружен', 
+        },
+
+        titles:{
+            feeds: 'Фиды', 
+            posts: 'Посты', 
+        }, 
+        
+        buttons: {
+            watchPost: 'Просмотр', 
+        },
     },
 };
