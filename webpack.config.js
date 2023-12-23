@@ -22,7 +22,7 @@ const config = {
     port: 5000, 
     open: true,
     hot: true, 
-    // static: path.resolve(__dirname, './dist/'),    
+    //static: path.resolve(__dirname, './dist/'),    
   },
   plugins: [
     new HtmlWebpackPlugin({
