@@ -4,7 +4,7 @@ import resources from '../locales/index.js';
 import axios from 'axios';
 import onChangeState from './View.js';
 import short from 'short-uuid';
-import { parseData } from './utilities.js';
+import { parseData, throwErrorResponse } from './utils.js';
 //import _ from 'lodash';
 
 const app = () => {
@@ -84,17 +84,11 @@ const app = () => {
             .then(() => axios.get(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(url)}`))
             .then((response) => {
 
-                const rawContents = response.data.contents;
+                const statusResponse = response.data.status.http_code;
 
-                if (rawContents === '') {
-                    throw new ReferenceError('noDataContents');
-                }
+                throwErrorResponse(statusResponse); 
 
-                // const parser = new DOMParser();
-
-                // const parsedData = parser.parseFromString(rawContents, "text/xml");
-
-                const parsedData = parseData(rawContents); 
+                const parsedData = parseData(response.data.contents);
 
                 const titleFeed = parsedData.querySelector('title').textContent;
                 const descriptionFeed = parsedData.querySelector('description').textContent;
@@ -122,7 +116,7 @@ const app = () => {
                     };
                 });
 
-                watchedState.loadedFeeds.feeds.unshift(newFeed); 
+                watchedState.loadedFeeds.feeds.unshift(newFeed);
 
                 watchedState.loadedContent.posts = [...newPosts, ...watchedState.loadedContent.posts];
 
@@ -132,19 +126,16 @@ const app = () => {
 
             })
             .catch((err) => {
-                // Как сделать иначе. Теперь любая ошибка в коде указывает на err.inner[0].type
-
-                if (err instanceof ReferenceError) {
-                    watchedState.rssForm.error = err.message;
-                } else {
+                if (err instanceof yup.ValidationError) {
                     watchedState.rssForm.error = err.inner[0].type;
+                } else {
+                    watchedState.rssForm.error = err.message;
                 }
-                // const keysError = Object.entries(err); 
-                // //['value', 'path', 'type', 'errors', 'params', 'inner', 'name', 'message']
-
-                //watchedState.rssForm.error = err.inner[0].type ?? err.message; //почему не работает ??? 
 
                 watchedState.rssForm.valid = false;
+
+                // const keysError = Object.entries(err); 
+                // ['value', 'path', 'type', 'errors', 'params', 'inner', 'name', 'message']
             });
 
     });//end addEventListener

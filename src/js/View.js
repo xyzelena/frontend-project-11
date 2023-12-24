@@ -28,11 +28,15 @@ const renderValidStatusRssForm = (elements, value) => {
 };
 
 const renderErrorsRssForm = (elements, value, i18n) => {
-    const input = elements.fields.input;
     const feedback = elements.feedback;
 
     if (value !== null) {
-        const error = i18n.t(`mistakes.${value}`);
+        const defaultMessage = i18n.t(`mistakes.noDataContents`); 
+
+        const error = i18n.t(`mistakes.${value}`, defaultMessage);
+
+       // const error = i18n.t(`mistakes.${value}`);
+        
         feedback.textContent = error;
     }
 };
@@ -84,8 +88,6 @@ const renderListFeeds = (elements, value, i18n) => {
 };
 
 const renderListPosts = (elements, value, i18n) => {
-    console.log(value);
-
     const listPosts = elements.posts;
     listPosts.textContent = '';
 
@@ -118,8 +120,6 @@ const renderListPosts = (elements, value, i18n) => {
         linkPost.textContent = title;
         liCard.appendChild(linkPost);
 
-        // <button type="button" class="btn btn-outline-primary btn-sm" data-id="2" 
-        //data-bs-toggle="modal" data-bs-target="#modal">Просмотр</button>
         const btnWatch = document.createElement('button');
         btnWatch.setAttribute('type', 'button');
         btnWatch.classList.add('btn', 'btn-outline-primary', 'btn-sm');

@@ -6,6 +6,7 @@ export default {
             notOneOf: 'Необходимо указать новый URL',
             fieldInvalid: 'URL неправильно указан', 
             noDataContents: 'Ресурс не содержит валидный RSS', 
+            networkError: 'Внутренняя ошибка сервера', 
         },
         confirmation: {
             loaded: 'RSS успешно загружен', 
