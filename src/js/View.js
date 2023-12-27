@@ -1,5 +1,4 @@
 import onChange from 'on-change';
-import { object } from 'yup';
 
 const renderValidStatusRssForm = (elements, value) => {
     const input = elements.fields.input;
@@ -12,7 +11,7 @@ const renderValidStatusRssForm = (elements, value) => {
         input.classList.add('is-valid');
         feedback.classList.add('valid-feedback');
 
-        input.textContent = '';
+        input.value = ''; 
         input.focus();
     } else if (value === false) {
         input.classList.remove('is-valid');
@@ -23,6 +22,7 @@ const renderValidStatusRssForm = (elements, value) => {
     } else if (value === 'idle') {
         input.classList.remove('is-invalid', 'is-valid');
         feedback.classList.remove('invalid-feedback', 'valid-feedback');
+
         feedback.textContent = '';
     }
 };
@@ -31,12 +31,7 @@ const renderErrorsRssForm = (elements, value, i18n) => {
     const feedback = elements.feedback;
 
     if (value !== null) {
-        const defaultMessage = i18n.t(`mistakes.noDataContents`); 
-
-        const error = i18n.t(`mistakes.${value}`, defaultMessage);
-
-       // const error = i18n.t(`mistakes.${value}`);
-        
+        const error = i18n.t(`mistakes.${value}`);
         feedback.textContent = error;
     }
 };
@@ -151,7 +146,7 @@ const render = (state, elements, i18n) => (path, value, prevValue) => {
             renderListFeeds(elements, value, i18n);
             break;
 
-        case 'loadedContent.posts':
+        case 'loadedPosts.posts':
             renderListPosts(elements, value, i18n);
             break;
 

@@ -1,10 +1,8 @@
 import * as yup from 'yup';
 import i18next from 'i18next';
 import resources from '../locales/index.js';
-import axios from 'axios';
 import onChangeState from './View.js';
-import short from 'short-uuid';
-import { parseData, throwErrorResponse } from './utils.js';
+import * as utils from './utils.js';
 //import _ from 'lodash';
 
 const app = () => {
@@ -45,7 +43,7 @@ const app = () => {
         loadedFeeds: {
             feeds: [],
         },
-        loadedContent: {
+        loadedPosts: {
             posts: [],
         },
         // interface:{}, 
@@ -60,7 +58,9 @@ const app = () => {
 
         watchedState.rssForm.fields.url = url;
 
-        const feedsLinks = watchedState.loadedFeeds.feeds.map(feed => feed.link);
+        const feedsLinks = utils.getLinks(watchedState.loadedFeeds.feeds);
+
+        const postsLinks = utils.getLinks(Object.values(watchedState.loadedPosts.posts));
 
         yup.setLocale({
             // use constant translation keys for messages without values
@@ -79,52 +79,38 @@ const app = () => {
                 .notOneOf(feedsLinks, 'url must be uniq'),
         });
 
-        const validateStatus = schema
-            .validate(watchedState.rssForm.fields, { abortEarly: false })
-            .then(() => axios.get(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(url)}`))
-            .then((response) => {
+        const processingUrl = new Promise((resolve) => {
+            resolve(schema.validate(watchedState.rssForm.fields, { abortEarly: false }));
+        })
 
+        processingUrl
+            .then((resolvedValue) =>
+                new Promise((resolve) => {
+                    resolve(utils.getAxiosData(resolvedValue.url));
+                }))
+
+            .then((response) => {
                 const statusResponse = response.data.status.http_code;
 
-                throwErrorResponse(statusResponse); 
+                utils.throwErrorResponse(statusResponse);
 
-                const parsedData = parseData(response.data.contents);
+                const parsedData = utils.parseData(response.data.contents);
 
-                const titleFeed = parsedData.querySelector('title').textContent;
-                const descriptionFeed = parsedData.querySelector('description').textContent;
+                const newFeed = utils.createNewFeed(parsedData, url);
 
-                const newFeed = {
-                    id: short.generate(),
-                    title: titleFeed,
-                    description: descriptionFeed,
-                    link: url,
-                };
+                const listPosts = utils.createListPosts(parsedData, newFeed.id, postsLinks);
 
-                const items = [...parsedData.querySelectorAll('item')];
-
-                const newPosts = items.map((item) => {
-                    const titlePost = item.querySelector('title').textContent;
-                    const descriptionPost = item.querySelector('description').textContent;
-                    const linkPost = item.querySelector('link').textContent;
-
-                    return {
-                        id: short.generate(),
-                        idFeed: newFeed.id,
-                        title: titlePost,
-                        description: descriptionPost,
-                        link: linkPost,
-                    };
-                });
 
                 watchedState.loadedFeeds.feeds.unshift(newFeed);
 
-                watchedState.loadedContent.posts = [...newPosts, ...watchedState.loadedContent.posts];
+                watchedState.loadedPosts.posts = [...listPosts, ...watchedState.loadedPosts.posts];
+
 
                 watchedState.rssForm.error = null;
 
                 watchedState.rssForm.valid = true;
-
             })
+
             .catch((err) => {
                 if (err instanceof yup.ValidationError) {
                     watchedState.rssForm.error = err.inner[0].type;
@@ -133,12 +119,49 @@ const app = () => {
                 }
 
                 watchedState.rssForm.valid = false;
-
-                // const keysError = Object.entries(err); 
-                // ['value', 'path', 'type', 'errors', 'params', 'inner', 'name', 'message']
             });
-
     });//end addEventListener
+
+    const updateListPosts = () => {
+
+        const feeds = watchedState.loadedFeeds.feeds; 
+
+        const postsLinks = utils.getLinks(Object.values(watchedState.loadedPosts.posts)); 
+
+        
+        if (feeds.length !== 0) {
+
+            const result = feeds.forEach(({id, link}) => {
+
+                const processingLink = new Promise((resolve) => {
+                    resolve(utils.getAxiosData(link));
+                });
+
+                processingLink
+                    .then((response) => {
+                        const statusResponse = response.data.status.http_code;
+
+                        utils.throwErrorResponse(statusResponse);
+
+                        const parsedData = utils.parseData(response.data.contents);
+
+                        const listPosts = utils.createListPosts(parsedData, id, postsLinks);
+
+                        watchedState.loadedPosts.posts = [...listPosts, ...watchedState.loadedPosts.posts];
+
+                    })
+                    .catch((err) => {
+                        return false; 
+                    });
+
+            }); // end forEach feedsLinks 
+
+        }//end if empty feedsLinks 
+
+        setTimeout(updateListPosts, 5000);
+    };
+
+    updateListPosts();
 };
 
 export default app;
