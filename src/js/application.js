@@ -1,9 +1,16 @@
 import * as yup from 'yup';
 import i18next from 'i18next';
+
 import resources from '../locales/index.js';
+
 import onChangeState from './View.js';
-import * as utils from './utils.js';
-//import _ from 'lodash';
+
+import { getLinks } from './utils/utils.js';
+import getAxiosData from './utils/getAxiosData.js';
+import parseData from './utils/parseData.js';
+import { throwErrorResponse } from './utils/throwErrors.js'
+import createNewFeed from './utils/createNewFeed.js';
+import createListPosts from './utils/createListPosts.js';
 
 const app = () => {
 
@@ -17,7 +24,7 @@ const app = () => {
             debug: false,
             resources,
         })
-        .then(function (t) { t('key'); });
+    // .then(function (t) { t('key'); }); // ????????????
 
     const elements = {
         form: document.querySelector('.rss-form'),
@@ -58,9 +65,9 @@ const app = () => {
 
         watchedState.rssForm.fields.url = url;
 
-        const feedsLinks = utils.getLinks(watchedState.loadedFeeds.feeds);
+        const feedsLinks = getLinks(watchedState.loadedFeeds.feeds);
 
-        const postsLinks = utils.getLinks(Object.values(watchedState.loadedPosts.posts));
+        const postsLinks = getLinks(Object.values(watchedState.loadedPosts.posts));
 
         yup.setLocale({
             // use constant translation keys for messages without values
@@ -86,19 +93,19 @@ const app = () => {
         processingUrl
             .then((resolvedValue) =>
                 new Promise((resolve) => {
-                    resolve(utils.getAxiosData(resolvedValue.url));
+                    resolve(getAxiosData(resolvedValue.url));
                 }))
 
             .then((response) => {
                 const statusResponse = response.data.status.http_code;
 
-                utils.throwErrorResponse(statusResponse);
+                throwErrorResponse(statusResponse);
 
-                const parsedData = utils.parseData(response.data.contents);
+                const parsedData = parseData(response.data.contents);
 
-                const newFeed = utils.createNewFeed(parsedData, url);
+                const newFeed = createNewFeed(parsedData, url);
 
-                const listPosts = utils.createListPosts(parsedData, newFeed.id, postsLinks);
+                const listPosts = createListPosts(parsedData, newFeed.id, postsLinks);
 
 
                 watchedState.loadedFeeds.feeds.unshift(newFeed);
@@ -124,34 +131,34 @@ const app = () => {
 
     const updateListPosts = () => {
 
-        const feeds = watchedState.loadedFeeds.feeds; 
+        const feeds = watchedState.loadedFeeds.feeds;
 
-        const postsLinks = utils.getLinks(Object.values(watchedState.loadedPosts.posts)); 
+        const postsLinks = getLinks(Object.values(watchedState.loadedPosts.posts));
 
-        
+
         if (feeds.length !== 0) {
 
-            const result = feeds.forEach(({id, link}) => {
+            const result = feeds.forEach(({ id, link }) => {
 
                 const processingLink = new Promise((resolve) => {
-                    resolve(utils.getAxiosData(link));
+                    resolve(getAxiosData(link));
                 });
 
                 processingLink
                     .then((response) => {
                         const statusResponse = response.data.status.http_code;
 
-                        utils.throwErrorResponse(statusResponse);
+                        throwErrorResponse(statusResponse);
 
-                        const parsedData = utils.parseData(response.data.contents);
+                        const parsedData = parseData(response.data.contents);
 
-                        const listPosts = utils.createListPosts(parsedData, id, postsLinks);
+                        const listPosts = createListPosts(parsedData, id, postsLinks);
 
                         watchedState.loadedPosts.posts = [...listPosts, ...watchedState.loadedPosts.posts];
 
                     })
                     .catch((err) => {
-                        return false; 
+                        return false;
                     });
 
             }); // end forEach feedsLinks 
