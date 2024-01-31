@@ -83,7 +83,7 @@ const renderListFeeds = (elements, value, i18n) => {
 };
 
 // Modal 
-const createModalWindow = (i18n) => {
+const createModalWindow = (id, title, description, link, i18n) => {
     const divModal = document.createElement('div');
     divModal.classList.add('modal', 'fade');
     divModal.setAttribute('id', 'modal');
@@ -104,7 +104,7 @@ const createModalWindow = (i18n) => {
 
     const modalTitle = document.createElement('h5');
     modalTitle.classList.add('modal-title');
-    modalTitle.textContent = 'Modal title'; // title
+    modalTitle.textContent = title;
     divModalHeader.appendChild(modalTitle);
 
     const btnClose = document.createElement('button');
@@ -122,7 +122,7 @@ const createModalWindow = (i18n) => {
     divModalBody.classList.add('modal-body');
 
     const descrModalBody = document.createElement('p');
-    descrModalBody.textContent = 'Modal body text goes here'; // descr
+    descrModalBody.textContent = description;
     divModalBody.appendChild(descrModalBody);
 
     divModalContent.appendChild(divModalBody);
@@ -133,7 +133,8 @@ const createModalWindow = (i18n) => {
     divModalFooter.classList.add('modal-footer');
 
     const btnRead = document.createElement('a'); // open link 
-    btnRead.setAttribute('href', '#'); //link
+    btnRead.setAttribute('href', link);
+    // btnRead.dataset.id = id;
     btnRead.classList.add('btn', 'btn-primary', 'full-article');
     btnRead.setAttribute('target', '_blank');
     btnRead.setAttribute('rel', 'noopener noreferrer');
@@ -178,7 +179,7 @@ const renderListPosts = (elements, value, i18n) => {
     const ulCard = document.createElement('ul');
     ulCard.classList.add('list-group', 'list-group-flush', 'border-0', 'rounded-0');
 
-    value.map(({ id, idFeed, title, link }) => {
+    value.map(({ id, idFeed, title, description, link }) => {
         const liCard = document.createElement('li');
         liCard.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start', 'border-0', 'border-end-0');
 
@@ -204,10 +205,11 @@ const renderListPosts = (elements, value, i18n) => {
         liCard.appendChild(btnWatch);
 
         //Modal 
-        const divModal = createModalWindow(i18n);
+        const divModal = createModalWindow(id, title, description, link, i18n);
         liCard.appendChild(divModal);
 
         ulCard.appendChild(liCard);
+
     });
 
     divCard.appendChild(ulCard);

@@ -5,7 +5,7 @@ import resources from '../locales/index.js';
 
 import onChangeState from './View.js';
 
-import { getLinks } from './utils/utils.js';
+import { getLinks, getIds } from './utils/utils.js';
 import getAxiosData from './utils/getAxiosData.js';
 import parseData from './utils/parseData.js';
 import { throwErrorResponse } from './utils/throwErrors.js'
@@ -166,7 +166,7 @@ const app = () => {
 
         }//end if empty feedsLinks 
 
-        setTimeout(updateListPosts, 10000); // 5000
+        setTimeout(updateListPosts, 30000); // 5000
     };
 
     updateListPosts();
