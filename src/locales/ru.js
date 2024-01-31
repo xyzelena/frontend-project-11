@@ -4,21 +4,26 @@ export default {
             url: 'Ссылка должна быть валидным URL',
             required: 'Необходимо указать URL',
             notOneOf: 'Необходимо указать новый URL',
-            fieldInvalid: 'URL неправильно указан', 
-            noDataContents: 'Ресурс не содержит валидный RSS', 
-            networkError: 'Внутренняя ошибка сервера', 
+            fieldInvalid: 'URL неправильно указан',
+            noDataContents: 'Ресурс не содержит валидный RSS',
+            networkError: 'Ошибка сети',
         },
         confirmation: {
-            loaded: 'RSS успешно загружен', 
+            loaded: 'RSS успешно загружен',
         },
 
-        titles:{
-            feeds: 'Фиды', 
-            posts: 'Посты', 
-        }, 
-        
-        buttons: {
-            watchPost: 'Просмотр', 
+        titles: {
+            feeds: 'Фиды',
+            posts: 'Посты',
         },
+
+        buttons: {
+            watchPost: 'Просмотр',
+        },
+
+        modal: {
+            watchLink: 'Читать полностью',
+            shutModal: 'Закрыть',
+        }
     },
 };
