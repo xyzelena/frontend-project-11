@@ -32,9 +32,8 @@ const app = () => {
             input: document.querySelector('.form-control'),
         },
         feedback: document.querySelector('.feedback'),
-        submit: document.querySelector('button[type="submit"]'),
-        posts: document.querySelector('.posts'),
         feeds: document.querySelector('.feeds'),
+        posts: document.querySelector('.posts'),
     };
 
     const input = elements.fields.input;
@@ -53,7 +52,9 @@ const app = () => {
         loadedPosts: {
             posts: [],
         },
-        // interface:{}, 
+        interface: {
+            idWatchedPosts: [],
+        },
     };
 
     const watchedState = onChangeState(initialState, elements, i18nInstance);
@@ -127,7 +128,7 @@ const app = () => {
 
                 watchedState.rssForm.valid = false;
             });
-    });//end addEventListener
+    });//end form.addEventListener
 
     const updateListPosts = () => {
 
@@ -165,7 +166,7 @@ const app = () => {
 
         }//end if empty feedsLinks 
 
-        setTimeout(updateListPosts, 5000);
+        setTimeout(updateListPosts, 10000); // 5000
     };
 
     updateListPosts();

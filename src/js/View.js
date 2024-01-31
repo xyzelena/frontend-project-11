@@ -11,7 +11,7 @@ const renderValidStatusRssForm = (elements, value) => {
         input.classList.add('is-valid');
         feedback.classList.add('valid-feedback');
 
-        input.value = ''; 
+        input.value = '';
         input.focus();
     } else if (value === false) {
         input.classList.remove('is-valid');
@@ -82,6 +82,82 @@ const renderListFeeds = (elements, value, i18n) => {
     listFeeds.appendChild(divCard);
 };
 
+// Modal 
+const createModalWindow = (i18n) => {
+    const divModal = document.createElement('div');
+    divModal.classList.add('modal', 'fade');
+    divModal.setAttribute('id', 'modal');
+    divModal.setAttribute('tabindex', '-1');
+    divModal.setAttribute('aria-labelledby', 'modal');
+    divModal.setAttribute('aria-hidden', 'true');
+
+    const divModalDialog = document.createElement('div');
+    divModalDialog.classList.add('modal-dialog');
+
+    const divModalContent = document.createElement('div');
+    divModalContent.classList.add('modal-content');
+
+    //////////////////////////
+
+    const divModalHeader = document.createElement('div');
+    divModalHeader.classList.add('modal-header');
+
+    const modalTitle = document.createElement('h5');
+    modalTitle.classList.add('modal-title');
+    modalTitle.textContent = 'Modal title'; // title
+    divModalHeader.appendChild(modalTitle);
+
+    const btnClose = document.createElement('button');
+    btnClose.setAttribute('type', 'button');
+    btnClose.classList.add('btn-close', 'close');
+    btnClose.dataset.bsDismiss = "modal";
+    btnClose.setAttribute('aria-label', 'Close');
+    divModalHeader.appendChild(btnClose);
+
+    divModalContent.appendChild(divModalHeader);
+
+    //////////////////////////
+
+    const divModalBody = document.createElement('div');
+    divModalBody.classList.add('modal-body');
+
+    const descrModalBody = document.createElement('p');
+    descrModalBody.textContent = 'Modal body text goes here'; // descr
+    divModalBody.appendChild(descrModalBody);
+
+    divModalContent.appendChild(divModalBody);
+
+    //////////////////////////
+
+    const divModalFooter = document.createElement('div');
+    divModalFooter.classList.add('modal-footer');
+
+    const btnRead = document.createElement('a'); // open link 
+    btnRead.setAttribute('href', '#'); //link
+    btnRead.classList.add('btn', 'btn-primary', 'full-article');
+    btnRead.setAttribute('target', '_blank');
+    btnRead.setAttribute('rel', 'noopener noreferrer');
+    btnRead.setAttribute('role', 'button');
+    btnRead.textContent = i18n.t('modal.watchLink');
+    divModalFooter.appendChild(btnRead);
+
+    const btnShut = document.createElement('button');
+    btnShut.setAttribute('type', 'button');
+    btnShut.classList.add('btn', 'btn-secondary');
+    btnShut.dataset.bsDismiss = "modal";
+    btnShut.textContent = i18n.t('modal.shutModal');
+    divModalFooter.appendChild(btnShut);
+
+    divModalContent.appendChild(divModalFooter);
+
+    //////////////////////////
+
+    divModalDialog.appendChild(divModalContent);
+    divModal.appendChild(divModalDialog);
+
+    return divModal;
+};
+
 const renderListPosts = (elements, value, i18n) => {
     const listPosts = elements.posts;
     listPosts.textContent = '';
@@ -112,9 +188,11 @@ const renderListPosts = (elements, value, i18n) => {
         linkPost.setAttribute('target', '_blank');
         linkPost.setAttribute('rel', 'noopener noreferrer');
         linkPost.classList.add('link-offset-2', 'link-offset-3-hover', 'link-underline', 'link-underline-opacity-0', 'link-underline-opacity-75-hover');
+        linkPost.classList.add('fw-bold');
         linkPost.textContent = title;
         liCard.appendChild(linkPost);
 
+        // Button trigger modal
         const btnWatch = document.createElement('button');
         btnWatch.setAttribute('type', 'button');
         btnWatch.classList.add('btn', 'btn-outline-primary', 'btn-sm');
@@ -122,7 +200,12 @@ const renderListPosts = (elements, value, i18n) => {
         btnWatch.dataset.bsToggle = "modal";
         btnWatch.dataset.bsTarget = "#modal";
         btnWatch.textContent = i18n.t('buttons.watchPost');
+
         liCard.appendChild(btnWatch);
+
+        //Modal 
+        const divModal = createModalWindow(i18n);
+        liCard.appendChild(divModal);
 
         ulCard.appendChild(liCard);
     });
