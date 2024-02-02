@@ -1,5 +1,5 @@
 export const throwErrorResponse = (statusResponse) => {
-    if (statusResponse >= 300 && statusResponse < 400) {
+    if (statusResponse === 304) {
         throw new Error('networkError');
     }
     else if (statusResponse >= 400 && statusResponse < 500) {
