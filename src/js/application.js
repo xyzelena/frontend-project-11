@@ -34,8 +34,11 @@ const app = () => {
         feedback: document.querySelector('.feedback'),
         feeds: document.querySelector('.feeds'),
         posts: document.querySelector('.posts'),
-        modal: {
+        modalWindow: {
             modal: document.getElementById('modal'),
+            modalTitle: document.querySelector('.postTitle'),
+            modalDescr: document.querySelector('.postDescr'),
+            postLink: document.querySelector('.postLink'),
         },
     };
 
@@ -56,6 +59,7 @@ const app = () => {
             posts: [],
         },
         interface: {
+            showedModal: false,
             idCurrentWatchedPost: null,
             idWatchedPosts: [],
         },
