@@ -5,7 +5,7 @@ import resources from '../locales/index.js';
 
 import onChangeState from './View.js';
 
-import { getLinks, getIds } from './utils/utils.js';
+import { getLinks } from './utils/utils.js';
 import getAxiosData from './utils/getAxiosData.js';
 import parseData from './utils/parseData.js';
 import { throwErrorResponse } from './utils/throwErrors.js'
@@ -34,6 +34,9 @@ const app = () => {
         feedback: document.querySelector('.feedback'),
         feeds: document.querySelector('.feeds'),
         posts: document.querySelector('.posts'),
+        modal: {
+            modal: document.getElementById('modal'),
+        },
     };
 
     const input = elements.fields.input;
@@ -42,7 +45,7 @@ const app = () => {
         rssForm: {
             valid: 'idle',
             fields: {
-                url: '',
+                url: null,
             },
             error: null,
         },
@@ -53,6 +56,7 @@ const app = () => {
             posts: [],
         },
         interface: {
+            idCurrentWatchedPost: null,
             idWatchedPosts: [],
         },
     };
@@ -113,7 +117,6 @@ const app = () => {
 
                 watchedState.loadedPosts.posts = [...listPosts, ...watchedState.loadedPosts.posts];
 
-
                 watchedState.rssForm.error = null;
 
                 watchedState.rssForm.valid = true;
@@ -135,7 +138,6 @@ const app = () => {
         const feeds = watchedState.loadedFeeds.feeds;
 
         const postsLinks = getLinks(Object.values(watchedState.loadedPosts.posts));
-
 
         if (feeds.length !== 0) {
 
@@ -166,7 +168,7 @@ const app = () => {
 
         }//end if empty feedsLinks 
 
-        setTimeout(updateListPosts, 30000); // 5000
+        setTimeout(updateListPosts, 5000); // 5000
     };
 
     updateListPosts();
