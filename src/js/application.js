@@ -132,17 +132,22 @@ const app = () => {
 
                 watchedState.rssForm.valid = false;
             });
-    });//end form.addEventListener
+    });
 
     modal.addEventListener('show.bs.modal', (e) => {
         // Button that triggered the modal
         const btnWatchPost = e.relatedTarget;
 
-        // Extract info from data-bs-* attributes
+        // Extract info from data-* attributes
         const idBtnWatchPost = btnWatchPost.getAttribute('data-id');
 
         // Update the modal's content
         watchedState.interface.idCurrentWatchedPost = idBtnWatchPost;
+
+        //Update watched posts
+        const idPosts = watchedState.interface.idWatchedPosts;
+
+        if (idPosts.indexOf(idBtnWatchPost) === -1) idPosts.push(idBtnWatchPost);
     });
 
     const updateListPosts = () => {
