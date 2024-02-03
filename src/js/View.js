@@ -147,9 +147,8 @@ const renderModal = (state, elements, value, i18n) => {
 
     const modalBody = modal.querySelector('.modal-body');
 
-    const descr = document.createElement('p');
+    const descr = modal.querySelector('.descr');
     descr.textContent = currentPost.description;
-    modalBody.append(descr);
 
     const btnLink = modal.querySelector('a.btn-primary.full-article');
     btnLink.setAttribute('href', currentPost.link);
