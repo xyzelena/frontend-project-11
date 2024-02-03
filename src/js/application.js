@@ -36,13 +36,11 @@ const app = () => {
         posts: document.querySelector('.posts'),
         modalWindow: {
             modal: document.getElementById('modal'),
-            modalTitle: document.querySelector('.postTitle'),
-            modalDescr: document.querySelector('.postDescr'),
-            postLink: document.querySelector('.postLink'),
         },
     };
 
     const input = elements.fields.input;
+    const modal = elements.modalWindow.modal;
 
     const initialState = {
         rssForm: {
@@ -59,7 +57,6 @@ const app = () => {
             posts: [],
         },
         interface: {
-            showedModal: false,
             idCurrentWatchedPost: null,
             idWatchedPosts: [],
         },
@@ -136,6 +133,17 @@ const app = () => {
                 watchedState.rssForm.valid = false;
             });
     });//end form.addEventListener
+
+    modal.addEventListener('show.bs.modal', (e) => {
+        // Button that triggered the modal
+        const btnWatchPost = e.relatedTarget;
+
+        // Extract info from data-bs-* attributes
+        const idBtnWatchPost = btnWatchPost.getAttribute('data-id');
+
+        // Update the modal's content
+        watchedState.interface.idCurrentWatchedPost = idBtnWatchPost;
+    });
 
     const updateListPosts = () => {
 
