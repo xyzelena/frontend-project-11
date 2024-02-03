@@ -54,9 +54,9 @@ const renderListFeeds = (elements, value, i18n) => {
     const titleCardBody = document.createElement('h2');
     titleCardBody.classList.add('card-title', 'h-4');
     titleCardBody.textContent = i18n.t('titles.feeds');
-    divCardBody.appendChild(titleCardBody);
+    divCardBody.append(titleCardBody);
 
-    divCard.appendChild(divCardBody);
+    divCard.append(divCardBody);
 
     const ulCard = document.createElement('ul');
     ulCard.classList.add('list-group', 'list-group-flush', 'border-0', 'rounded-0');
@@ -68,21 +68,21 @@ const renderListFeeds = (elements, value, i18n) => {
         const titleFeed = document.createElement('h3');
         titleFeed.classList.add('h6', 'm-0');
         titleFeed.textContent = title;
-        liCard.appendChild(titleFeed);
+        liCard.append(titleFeed);
 
         const descriptionFeed = document.createElement('p');
         descriptionFeed.classList.add('small', 'm-0', 'text-black-50');
         descriptionFeed.textContent = description;
-        liCard.appendChild(descriptionFeed);
+        liCard.append(descriptionFeed);
 
-        ulCard.appendChild(liCard);
+        ulCard.append(liCard);
     });
 
-    divCard.appendChild(ulCard);
-    listFeeds.appendChild(divCard);
+    divCard.append(ulCard);
+    listFeeds.append(divCard);
 };
 
-const renderListPosts = (state, elements, value, i18n) => {
+const renderListPosts = (elements, value, i18n) => {
     const listPosts = elements.posts;
     listPosts.textContent = '';
 
@@ -95,9 +95,9 @@ const renderListPosts = (state, elements, value, i18n) => {
     const titleCardBody = document.createElement('h2');
     titleCardBody.classList.add('card-title', 'h-4');
     titleCardBody.textContent = i18n.t('titles.posts');
-    divCardBody.appendChild(titleCardBody);
+    divCardBody.append(titleCardBody);
 
-    divCard.appendChild(divCardBody);
+    divCard.append(divCardBody);
 
     const ulCard = document.createElement('ul');
     ulCard.classList.add('list-group', 'list-group-flush', 'border-0', 'rounded-0');
@@ -114,7 +114,7 @@ const renderListPosts = (state, elements, value, i18n) => {
         linkPost.classList.add('link-offset-2', 'link-offset-3-hover', 'link-underline', 'link-underline-opacity-0', 'link-underline-opacity-75-hover');
         linkPost.classList.add('fw-bold');
         linkPost.textContent = title;
-        liCard.appendChild(linkPost);
+        liCard.append(linkPost);
 
         // Button trigger modal
         const btnWatch = document.createElement('button');
@@ -125,15 +125,44 @@ const renderListPosts = (state, elements, value, i18n) => {
         btnWatch.dataset.bsTarget = "#modal";
         btnWatch.textContent = i18n.t('buttons.watchPost');
 
-        liCard.appendChild(btnWatch);
+        liCard.append(btnWatch);
 
-        ulCard.appendChild(liCard);
+        ulCard.append(liCard);
 
     });
 
-    divCard.appendChild(ulCard);
+    divCard.append(ulCard);
 
-    listPosts.appendChild(divCard);
+    listPosts.append(divCard);
+};
+
+const renderModal = (state, elements, value, i18n) => {
+    // var modalTitle = exampleModal.querySelector('.modal-title')
+    // var modalBodyInput = exampleModal.querySelector('.modal-body input')
+
+    // modalTitle.textContent = 'New message to ' + recipient
+    // modalBodyInput.value = recipient
+
+    const currentPost = Object.values(state.loadedPosts.posts)
+        .find((post) => post.id === value);
+
+    const modal = elements.modalWindow.modal;
+
+    const modalTitle = modal.querySelector('.modal-title');
+    modalTitle.textContent = currentPost.title;
+
+    const modalBody = modal.querySelector('.modal-body');
+
+    const descr = document.createElement('p');
+    descr.textContent = currentPost.description;
+    modalBody.append(descr);
+
+    const btnLink = modal.querySelector('a.btn-primary.full-article');
+    btnLink.setAttribute('href', currentPost.link);
+    btnLink.textContent = i18n.t('modal.readPost');
+
+    const btnClose = modal.querySelector('button.btn-secondary');
+    btnClose.textContent = i18n.t('modal.closeModal');
 };
 
 const render = (state, elements, i18n) => (path, value, prevValue) => {
@@ -152,7 +181,11 @@ const render = (state, elements, i18n) => (path, value, prevValue) => {
             break;
 
         case 'loadedPosts.posts':
-            renderListPosts(state, elements, value, i18n);
+            renderListPosts(elements, value, i18n);
+            break;
+
+        case 'interface.idCurrentWatchedPost':
+            renderModal(state, elements, value, i18n);
             break;
 
         default:
