@@ -137,12 +137,6 @@ const renderListPosts = (elements, value, i18n) => {
 };
 
 const renderModal = (state, elements, value, i18n) => {
-    // var modalTitle = exampleModal.querySelector('.modal-title')
-    // var modalBodyInput = exampleModal.querySelector('.modal-body input')
-
-    // modalTitle.textContent = 'New message to ' + recipient
-    // modalBodyInput.value = recipient
-
     const currentPost = Object.values(state.loadedPosts.posts)
         .find((post) => post.id === value);
 
