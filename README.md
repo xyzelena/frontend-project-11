@@ -6,8 +6,3 @@
 ### Rss Reader
 
 Link in [Vercel](https://frontend-project-11-af6bgm782-xyzelenas-projects.vercel.app)
-
-
-
-
-
