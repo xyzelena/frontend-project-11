@@ -158,6 +158,18 @@ const renderModal = (state, elements, value, i18n) => {
     btnClose.textContent = i18n.t('modal.closeModal');
 };
 
+const renderWatchedListPosts = (elements, value) => {
+    const idWatchedPosts = value;
+    const posts = elements.posts;
+
+    idWatchedPosts.forEach((idPost) => {
+        const linkPost = posts.querySelector(`a[data-id='${idPost}']`);
+        linkPost.classList.remove('fw-bold');
+        linkPost.classList.add('fw-normal');
+    });
+
+};
+
 const render = (state, elements, i18n) => (path, value, prevValue) => {
     switch (path) {
         case 'rssForm.valid':
@@ -175,10 +187,15 @@ const render = (state, elements, i18n) => (path, value, prevValue) => {
 
         case 'loadedPosts.posts':
             renderListPosts(elements, value, i18n);
+            renderWatchedListPosts(elements, state.interface.idWatchedPosts);
             break;
 
         case 'interface.idCurrentWatchedPost':
             renderModal(state, elements, value, i18n);
+            break;
+
+        case 'interface.idWatchedPosts':
+            renderWatchedListPosts(elements, value);
             break;
 
         default:
