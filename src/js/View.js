@@ -125,12 +125,6 @@ const renderListPosts = (state, elements, value, i18n) => {
         btnWatch.dataset.bsTarget = "#modal";
         btnWatch.textContent = i18n.t('buttons.watchPost');
 
-        btnWatch.addEventListener('click', (e) => {
-            state.interface.showedModal = true;
-            state.interface.idCurrentWatchedPost = id;
-            state.interface.idWatchedPosts = [...state.interface.idWatchedPosts, ...id];
-        });
-
         liCard.appendChild(btnWatch);
 
         ulCard.appendChild(liCard);
@@ -140,13 +134,6 @@ const renderListPosts = (state, elements, value, i18n) => {
     divCard.appendChild(ulCard);
 
     listPosts.appendChild(divCard);
-};
-
-const renderModal = (state, elements, value) => {
-    const { modal, modalTitle, modalDescr, postLink } = elements.modalWindow;
-    console.log('modalTitle');
-
-    modalTitle.textContent = 'ggg';
 };
 
 const render = (state, elements, i18n) => (path, value, prevValue) => {
@@ -166,10 +153,6 @@ const render = (state, elements, i18n) => (path, value, prevValue) => {
 
         case 'loadedPosts.posts':
             renderListPosts(state, elements, value, i18n);
-            break;
-
-        case 'interface.showedModal':
-            renderModal(state, elements, value);
             break;
 
         default:
