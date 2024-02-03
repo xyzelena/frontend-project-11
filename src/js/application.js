@@ -81,7 +81,7 @@ const app = () => {
                 url: 'url',
                 required: 'required',
                 notOneOf: 'notOneOf',
-                default: 'fieldInvalid',
+                default: 'url',
             },
         });
 
