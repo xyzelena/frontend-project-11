@@ -82,7 +82,7 @@ const renderListFeeds = (elements, value, i18n) => {
     listFeeds.append(divCard);
 };
 
-const renderListPosts = (elements, value, i18n) => {
+const renderListPosts = (state, elements, value, i18n) => {
     const listPosts = elements.posts;
     listPosts.textContent = '';
 
@@ -114,6 +114,15 @@ const renderListPosts = (elements, value, i18n) => {
         linkPost.classList.add('link-offset-2', 'link-offset-3-hover', 'link-underline', 'link-underline-opacity-0', 'link-underline-opacity-75-hover');
         linkPost.classList.add('fw-bold');
         linkPost.textContent = title;
+
+        linkPost.addEventListener('click', (e) => {
+            const idCurrentPost = e.target.dataset.id;
+
+            //Update watched posts
+            const idWatchedPosts = state.interface.idWatchedPosts;
+            if (idWatchedPosts.indexOf(idCurrentPost) === -1) idWatchedPosts.push(idCurrentPost);
+        });
+
         liCard.append(linkPost);
 
         // Button trigger modal
@@ -186,7 +195,7 @@ const render = (state, elements, i18n) => (path, value, prevValue) => {
             break;
 
         case 'loadedPosts.posts':
-            renderListPosts(elements, value, i18n);
+            renderListPosts(state, elements, value, i18n);
             renderWatchedListPosts(elements, state.interface.idWatchedPosts);
             break;
 
