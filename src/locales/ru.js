@@ -20,5 +20,10 @@ export default {
         buttons: {
             watchPost: 'Просмотр',
         },
+
+        modal: {
+            readPost: 'Читать полностью',
+            closeModal: 'Закрыть',
+        },
     },
 };
