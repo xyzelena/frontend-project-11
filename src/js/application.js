@@ -146,7 +146,6 @@ const app = () => {
 
         //Update watched posts
         const idPosts = watchedState.interface.idWatchedPosts;
-
         if (idPosts.indexOf(idBtnWatchPost) === -1) idPosts.push(idBtnWatchPost);
     });
 
