@@ -2,9 +2,8 @@ export default {
     translation: {
         mistakes: {
             url: 'Ссылка должна быть валидным URL',
-            required: 'Необходимо указать URL',
-            notOneOf: 'Необходимо указать новый URL',
-            fieldInvalid: 'URL неправильно указан',
+            required: 'Не должно быть пустым',
+            notOneOf: 'RSS уже существует',
             noDataContents: 'Ресурс не содержит валидный RSS',
             networkError: 'Ошибка сети',
         },
