@@ -7,7 +7,8 @@
     <title>RSS-reader</title>
 </head>
 
-<body>
+
+<body class="d-flex flex-column min-vh-100">
 
     <!-- Modal for posts-->
     <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
@@ -30,6 +31,7 @@
     </div>
 
     <main class="flex-grow-1">
+
         <section class="container-fluid p-5 bg-dark text-white">
             <div class="row">
                 <div class="col-md-10 col-lg-8 mx-auto text-white">
@@ -39,9 +41,9 @@
                     <form action="" class="rss-form text-body">
                         <div class="row">
                             <div class="col-sm-8">
-                                <!-- form-floating -->
                                 <input id="url-input" autofocus required name="url" aria-label="url"
                                     class="form-control h-100" placeholder="ссылка RSS" autocomplete="off">
+
                                 <label for="url-input" class="visually-hidden">Ссылка RSS</label>
 
                                 <p class='feedback'></p>
@@ -66,6 +68,16 @@
         </section>
 
     </main>
+
+    <footer class="footer border-top py-3 mt-5 bg-light">
+        <div class="container-xl">
+            <div class="text-center">
+                Link to
+                <a href="https://github.com/xyzelena/frontend-project-11" role="button" target="_blank"
+                    rel="noopener noreferrer">GitHub</a>
+            </div>
+        </div>
+    </footer>
 </body>
 
 </html>
