@@ -1,5 +1,20 @@
 import onChange from 'on-change';
 
+const renderBaseUI = (elements, value, i18n) => {
+    if (value === true) {
+        const { header, leadText, placeholderInput, labelInput, btnSubmit, exampleUrl, footerText, footerLink } = elements;
+
+        header.textContent = i18n.t('baseTextUI.header');
+        leadText.textContent = i18n.t('baseTextUI.leadText');
+        placeholderInput.setAttribute('placeholder', i18n.t('baseTextUI.placeholderInput'));
+        labelInput.textContent = i18n.t('baseTextUI.labelInput');
+        btnSubmit.textContent = i18n.t('baseTextUI.btnSubmit');
+        exampleUrl.textContent = i18n.t('baseTextUI.exampleUrl');
+        footerText.textContent = i18n.t('baseTextUI.footerText');
+        footerLink.textContent = i18n.t('baseTextUI.footerLink');
+    }
+};
+
 const renderValidStatusRssForm = (elements, value) => {
     const input = elements.fields.input;
     const feedback = elements.feedback;
@@ -181,6 +196,10 @@ const renderWatchedListPosts = (elements, value) => {
 
 const render = (state, elements, i18n) => (path, value, prevValue) => {
     switch (path) {
+        case 'UI.loadingBaseUI':
+            renderBaseUI(elements.baseTextUI, value, i18n);
+            break;
+
         case 'rssForm.valid':
             renderValidStatusRssForm(elements, value);
             break;
