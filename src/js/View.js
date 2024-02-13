@@ -28,7 +28,7 @@ const renderValidStatusRssForm = (elements, value) => {
     const input = elements.input;
     const feedback = elements.feedback;
 
-    if (value === true) {
+    if (value === 'success') {
         input.classList.remove('is-invalid');
         feedback.classList.remove('invalid-feedback');
 
@@ -37,7 +37,7 @@ const renderValidStatusRssForm = (elements, value) => {
 
         input.value = '';
         input.focus();
-    } else if (value === false) {
+    } else if (value === 'fail') {
         input.classList.remove('is-valid');
         feedback.classList.remove('valid-feedback');
 
