@@ -1,7 +1,7 @@
 import onChange from 'on-change';
 
 const renderBaseUI = (elements, value, i18n) => {
-    if (value === true) {
+    if (value === 'success') {
         const {
             header,
             leadText,
