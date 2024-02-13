@@ -1,6 +1,6 @@
 import * as yup from 'yup';
-import i18next from 'i18next';
 
+import i18next from 'i18next';
 import resources from '../locales/index.js';
 
 import onChangeState from './View.js';
@@ -27,9 +27,19 @@ const app = () => {
     // .then(function (t) { t('key'); }); // ????????????
 
     const elements = {
+        baseTextUI: {
+            header: document.querySelector('h1.display-3.mb-0'),
+            leadText: document.querySelector('p.lead'),
+            placeholderInput: document.querySelector('#url-input'),
+            labelInput: document.querySelector('label.visually-hidden'),
+            btnSubmit: document.querySelector('button[type="submit"]'),
+            exampleUrl: document.querySelector('p.mt-4.text-secondary'),
+            footerText: document.querySelector('#footer>span'),
+            footerLink: document.querySelector('#footer>a'),
+        },
         form: document.querySelector('.rss-form'),
         fields: {
-            input: document.querySelector('.form-control'),
+            input: document.querySelector('#url-input'),
         },
         feedback: document.querySelector('.feedback'),
         feeds: document.querySelector('.feeds'),
@@ -39,10 +49,14 @@ const app = () => {
         },
     };
 
+    const form = elements.form;
     const input = elements.fields.input;
     const modal = elements.modalWindow.modal;
 
     const initialState = {
+        UI: {
+            loadingBaseUI: false,
+        },
         rssForm: {
             valid: 'idle',
             fields: {
@@ -64,7 +78,9 @@ const app = () => {
 
     const watchedState = onChangeState(initialState, elements, i18nInstance);
 
-    elements.form.addEventListener('submit', (e) => {
+    watchedState.UI.loadingBaseUI = true;
+
+    form.addEventListener('submit', (e) => {
         e.preventDefault();
 
         const url = input.value.trim();
