@@ -2,7 +2,16 @@ import onChange from 'on-change';
 
 const renderBaseUI = (elements, value, i18n) => {
     if (value === true) {
-        const { header, leadText, placeholderInput, labelInput, btnSubmit, exampleUrl, footerText, footerLink } = elements;
+        const {
+            header,
+            leadText,
+            placeholderInput,
+            labelInput,
+            btnSubmit,
+            exampleUrl,
+            footerText,
+            footerLink,
+        } = elements;
 
         header.textContent = i18n.t('baseTextUI.header');
         leadText.textContent = i18n.t('baseTextUI.leadText');
@@ -16,7 +25,7 @@ const renderBaseUI = (elements, value, i18n) => {
 };
 
 const renderValidStatusRssForm = (elements, value) => {
-    const input = elements.fields.input;
+    const input = elements.input;
     const feedback = elements.feedback;
 
     if (value === true) {
@@ -42,22 +51,18 @@ const renderValidStatusRssForm = (elements, value) => {
     }
 };
 
-const renderErrorsRssForm = (elements, value, i18n) => {
-    const feedback = elements.feedback;
-
+const renderErrorsRssForm = (feedback, value, i18n) => {
     if (value !== null) {
         const error = i18n.t(`mistakes.${value}`);
         feedback.textContent = error;
     }
 };
 
-const renderFeedbackLoadedFeeds = (elements, i18n) => {
-    const feedback = elements.feedback;
+const renderFeedbackLoadedFeeds = (feedback, i18n) => {
     feedback.textContent = i18n.t('confirmation.loaded');
 };
 
-const renderListFeeds = (elements, value, i18n) => {
-    const listFeeds = elements.feeds;
+const renderListFeeds = (listFeeds, value, i18n) => {
     listFeeds.textContent = '';
 
     const divCard = document.createElement('div');
@@ -97,8 +102,7 @@ const renderListFeeds = (elements, value, i18n) => {
     listFeeds.append(divCard);
 };
 
-const renderListPosts = (state, elements, value, i18n) => {
-    const listPosts = elements.posts;
+const renderListPosts = (idWatchedPosts, listPosts, value, i18n) => {
     listPosts.textContent = '';
 
     const divCard = document.createElement('div');
@@ -134,7 +138,6 @@ const renderListPosts = (state, elements, value, i18n) => {
             const idCurrentPost = e.target.dataset.id;
 
             //Update watched posts
-            const idWatchedPosts = state.interface.idWatchedPosts;
             if (idWatchedPosts.indexOf(idCurrentPost) === -1) idWatchedPosts.push(idCurrentPost);
         });
 
@@ -160,11 +163,9 @@ const renderListPosts = (state, elements, value, i18n) => {
     listPosts.append(divCard);
 };
 
-const renderModal = (state, elements, value, i18n) => {
-    const currentPost = Object.values(state.loadedPosts.posts)
+const renderModal = (stateLoadedPosts, modal, value, i18n) => {
+    const currentPost = Object.values(stateLoadedPosts)
         .find((post) => post.id === value);
-
-    const modal = elements.modalWindow.modal;
 
     const modalTitle = modal.querySelector('.modal-title');
     modalTitle.textContent = currentPost.title;
@@ -182,12 +183,11 @@ const renderModal = (state, elements, value, i18n) => {
     btnClose.textContent = i18n.t('modal.closeModal');
 };
 
-const renderWatchedListPosts = (elements, value) => {
+const renderWatchedListPosts = (listPosts, value) => {
     const idWatchedPosts = value;
-    const posts = elements.posts;
 
     idWatchedPosts.forEach((idPost) => {
-        const linkPost = posts.querySelector(`a[data-id='${idPost}']`);
+        const linkPost = listPosts.querySelector(`a[data-id='${idPost}']`);
         linkPost.classList.remove('fw-bold');
         linkPost.classList.add('fw-normal');
     });
@@ -201,29 +201,32 @@ const render = (state, elements, i18n) => (path, value, prevValue) => {
             break;
 
         case 'rssForm.valid':
-            renderValidStatusRssForm(elements, value);
+            const input = elements.fields.input;
+            const feedback = elements.feedback;
+
+            renderValidStatusRssForm({ input, feedback }, value);
             break;
 
         case 'rssForm.error':
-            renderErrorsRssForm(elements, value, i18n);
+            renderErrorsRssForm(elements.feedback, value, i18n);
             break;
 
         case 'loadedFeeds.feeds':
-            renderFeedbackLoadedFeeds(elements, i18n);
-            renderListFeeds(elements, value, i18n);
+            renderFeedbackLoadedFeeds(elements.feedback, i18n);
+            renderListFeeds(elements.feeds, value, i18n);
             break;
 
         case 'loadedPosts.posts':
-            renderListPosts(state, elements, value, i18n);
-            renderWatchedListPosts(elements, state.interface.idWatchedPosts);
+            renderListPosts(state.interface.idWatchedPosts, elements.posts, value, i18n);
+            renderWatchedListPosts(elements.posts, state.interface.idWatchedPosts);
             break;
 
         case 'interface.idCurrentWatchedPost':
-            renderModal(state, elements, value, i18n);
+            renderModal(state.loadedPosts.posts, elements.modalWindow.modal, value, i18n);
             break;
 
         case 'interface.idWatchedPosts':
-            renderWatchedListPosts(elements, value);
+            renderWatchedListPosts(elements.posts, value);
             break;
 
         default:
