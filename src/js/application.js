@@ -47,8 +47,10 @@ const app = () => {
     };
 
     const initialState = {
-        UI: {
+        loadingProcess: {
             loadingBaseUI: STATUS.IDLE,
+
+            error: null,
         },
         rssForm: {
             valid: STATUS.IDLE,
@@ -57,6 +59,7 @@ const app = () => {
             },
             error: null,
         },
+
         loadedFeeds: {
             feeds: [],
         },
@@ -83,7 +86,7 @@ const app = () => {
 
             const watchedState = onChangeState(initialState, elements, i18nInstance);
 
-            watchedState.UI.loadingBaseUI = STATUS.SUCCESS;
+            watchedState.loadingProcess.loadingBaseUI = STATUS.SUCCESS;
 
             form.addEventListener('submit', (e) => {
                 e.preventDefault();
@@ -109,7 +112,7 @@ const app = () => {
 
                         const parsedData = parseData(response.data.contents);
 
-                        const newFeed = createNewFeed(parsedData, url);
+                        const newFeed = createNewFeed(parsedData, watchedState.rssForm.fields.url);
 
                         const listPosts = createListPosts(parsedData, newFeed.id, postsLinks);
 
@@ -123,10 +126,6 @@ const app = () => {
                     })
 
                     .catch((err) => {
-                        // const e = Object.entries(err);
-                        // console.log(e);
-                        // console.log(err.name);
-                        //console.log(err.inner[0].type);
 
                         if (err.name === 'ValidationError') {
                             watchedState.rssForm.error = err.inner[0].type;

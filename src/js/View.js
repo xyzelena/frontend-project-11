@@ -196,7 +196,7 @@ const renderWatchedListPosts = (listPosts, value) => {
 
 const render = (state, elements, i18n) => (path, value, prevValue) => {
     switch (path) {
-        case 'UI.loadingBaseUI':
+        case 'loadingProcess.loadingBaseUI':
             renderBaseUI(elements.baseTextUI, value, i18n);
             break;
 
