@@ -49,8 +49,10 @@ const app = () => {
     const initialState = {
         loadingProcess: {
             loadingBaseUI: STATUS.IDLE,
-
-            error: null,
+            loadingData: {
+                loadingDataUrl: STATUS.IDLE,
+                error: null,
+            },
         },
         rssForm: {
             valid: STATUS.IDLE,
@@ -129,11 +131,12 @@ const app = () => {
 
                         if (err.name === 'ValidationError') {
                             watchedState.rssForm.error = err.inner[0].type;
+                            watchedState.rssForm.valid = STATUS.FAIL;
                         } else {
-                            watchedState.rssForm.error = err.message;
+                            //watchedState.rssForm.error = err.message;
+                            watchedState.loadingProcess.loadingData.error = err.message;
+                            watchedState.loadingProcess.loadingData.loadingDataUrl = STATUS.FAIL;
                         }
-
-                        watchedState.rssForm.valid = STATUS.FAIL;
                     });
             });
 
