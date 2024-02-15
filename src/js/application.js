@@ -118,17 +118,17 @@ const app = () => {
 
                         const listPosts = createListPosts(parsedData, newFeed.id, postsLinks);
 
+
                         watchedState.loadedFeeds.feeds.unshift(newFeed);
 
                         watchedState.loadedPosts.posts = [...listPosts, ...watchedState.loadedPosts.posts];
 
-                        watchedState.rssForm.error = null;
+                        watchedState.loadingProcess.loadingData.error = null;
 
-                        watchedState.rssForm.valid = STATUS.SUCCESS;
+                        watchedState.loadingProcess.loadingData.loadingDataUrl = STATUS.SUCCESS;
                     })
 
                     .catch((err) => {
-
                         if (err.name === 'ValidationError') {
                             watchedState.rssForm.error = err.inner[0].type;
                             watchedState.rssForm.valid = STATUS.FAIL;
