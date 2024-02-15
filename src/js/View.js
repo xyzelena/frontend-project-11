@@ -24,7 +24,7 @@ const renderBaseUI = (elements, value, i18n) => {
     }
 };
 
-const renderValidStatusRssForm = (elements, value) => {
+const renderStatusRssForm = (elements, value) => {
     const input = elements.input;
     const feedback = elements.feedback;
 
@@ -51,7 +51,7 @@ const renderValidStatusRssForm = (elements, value) => {
     }
 };
 
-const renderErrorsRssForm = (feedback, value, i18n) => {
+const renderErrors = (feedback, value, i18n) => {
     if (value !== null) {
         const error = i18n.t(`mistakes.${value}`);
         feedback.textContent = error;
@@ -195,38 +195,47 @@ const renderWatchedListPosts = (listPosts, value) => {
 };
 
 const render = (state, elements, i18n) => (path, value, prevValue) => {
+    const input = elements.fields.input;
+    const modal = elements.modalWindow.modal;
+    const { baseTextUI, feedback, feeds, posts } = elements;
+
     switch (path) {
         case 'loadingProcess.loadingBaseUI':
-            renderBaseUI(elements.baseTextUI, value, i18n);
+            renderBaseUI(baseTextUI, value, i18n);
             break;
 
         case 'rssForm.valid':
-            const input = elements.fields.input;
-            const feedback = elements.feedback;
+            renderStatusRssForm({ input, feedback }, value);
+            break;
 
-            renderValidStatusRssForm({ input, feedback }, value);
+        case 'loadingProcess.loadingData.loadingDataUrl':
+            renderStatusRssForm({ input, feedback }, value);
             break;
 
         case 'rssForm.error':
-            renderErrorsRssForm(elements.feedback, value, i18n);
+            renderErrors(feedback, value, i18n);
+            break;
+
+        case 'loadingProcess.loadingData.error':
+            renderErrors(feedback, value, i18n);
             break;
 
         case 'loadedFeeds.feeds':
-            renderFeedbackLoadedFeeds(elements.feedback, i18n);
-            renderListFeeds(elements.feeds, value, i18n);
+            renderFeedbackLoadedFeeds(feedback, i18n);
+            renderListFeeds(feeds, value, i18n);
             break;
 
         case 'loadedPosts.posts':
-            renderListPosts(state.interface.idWatchedPosts, elements.posts, value, i18n);
-            renderWatchedListPosts(elements.posts, state.interface.idWatchedPosts);
+            renderListPosts(state.interface.idWatchedPosts, posts, value, i18n);
+            renderWatchedListPosts(posts, state.interface.idWatchedPosts);
             break;
 
         case 'interface.idCurrentWatchedPost':
-            renderModal(state.loadedPosts.posts, elements.modalWindow.modal, value, i18n);
+            renderModal(state.loadedPosts.posts, modal, value, i18n);
             break;
 
         case 'interface.idWatchedPosts':
-            renderWatchedListPosts(elements.posts, value);
+            renderWatchedListPosts(posts, value);
             break;
 
         default:
