@@ -152,39 +152,28 @@ const app = () => {
             });
 
             const updateListPosts = () => {
-
                 const feeds = watchedState.loadedFeeds.feeds;
-
                 const postsLinks = getLinks(Object.values(watchedState.loadedPosts.posts));
 
-                if (feeds.length !== 0) {
+                const promises = feeds.map(({ id, link }) => {
+                    return getAxiosData(link)
+                        .then((response) => {
+                            const statusResponse = response.data.status.http_code;
 
-                    const result = feeds.forEach(({ id, link }) => {
+                            throwErrorResponse(statusResponse);
 
-                        const processingLink = getAxiosData(link);
+                            const parsedData = parseData(response.data.contents);
 
-                        processingLink
-                            .then((response) => {
-                                const statusResponse = response.data.status.http_code;
+                            const listPosts = createListPosts(parsedData, id, postsLinks);
 
-                                throwErrorResponse(statusResponse);
+                            watchedState.loadedPosts.posts = [...listPosts, ...watchedState.loadedPosts.posts];
 
-                                const parsedData = parseData(response.data.contents);
+                        })
+                        .catch((err) => { });
+                });
 
-                                const listPosts = createListPosts(parsedData, id, postsLinks);
-
-                                watchedState.loadedPosts.posts = [...listPosts, ...watchedState.loadedPosts.posts];
-
-                            })
-                            .catch((err) => {
-                                return false;
-                            });
-
-                    }); // end forEach feedsLinks 
-
-                }//end if empty feedsLinks 
-
-                setTimeout(updateListPosts, 5000); // 5000
+                Promise.all(promises)
+                    .then(() => setTimeout(updateListPosts, 5000));
             };
 
             updateListPosts();
