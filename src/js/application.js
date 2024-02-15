@@ -1,10 +1,9 @@
-import * as yup from 'yup';
-
 import i18next from 'i18next';
 import resources from '../locales/index.js';
 
 import onChangeState from './View.js';
 
+import validateData from './utils/validateData.js';
 import { getLinks } from './utils/utils.js';
 import getAxiosData from './utils/getAxiosData.js';
 import parseData from './utils/parseData.js';
@@ -86,39 +85,16 @@ const app = () => {
 
             watchedState.UI.loadingBaseUI = STATUS.SUCCESS;
 
-            yup.setLocale({
-                // use constant translation keys for messages without values
-                mixed: {
-                    url: 'url',
-                    required: 'required',
-                    notOneOf: 'notOneOf',
-                    default: 'url',
-                },
-            });
-
-            const feedsLinks = getLinks(watchedState.loadedFeeds.feeds);
-
-            const schema = yup.object().shape({
-                url: yup.string()
-                    .url('url must be correct')
-                    .required('url must be required')
-                    .notOneOf(feedsLinks, 'url must be uniq'),
-            });
-
-            const validateData = (data) => {
-                return schema.validate(data, { abortEarly: false });
-            };
-
             form.addEventListener('submit', (e) => {
                 e.preventDefault();
 
-                const url = input.value.trim();
-
-                watchedState.rssForm.fields.url = url;
+                watchedState.rssForm.fields.url = input.value.trim();
 
                 const postsLinks = getLinks(Object.values(watchedState.loadedPosts.posts));
 
-                const processingUrl = validateData(watchedState.rssForm.fields);
+                const feedsLinks = getLinks(watchedState.loadedFeeds.feeds);
+
+                const processingUrl = validateData(watchedState.rssForm.fields, feedsLinks);
 
                 processingUrl
                     .then((resolvedValue) =>
@@ -137,24 +113,28 @@ const app = () => {
 
                         const listPosts = createListPosts(parsedData, newFeed.id, postsLinks);
 
-
                         watchedState.loadedFeeds.feeds.unshift(newFeed);
 
                         watchedState.loadedPosts.posts = [...listPosts, ...watchedState.loadedPosts.posts];
 
                         watchedState.rssForm.error = null;
 
-                        watchedState.rssForm.valid = true;
+                        watchedState.rssForm.valid = STATUS.SUCCESS;
                     })
 
                     .catch((err) => {
-                        if (err instanceof yup.ValidationError) {
+                        // const e = Object.entries(err);
+                        // console.log(e);
+                        // console.log(err.name);
+                        //console.log(err.inner[0].type);
+
+                        if (err.name === 'ValidationError') {
                             watchedState.rssForm.error = err.inner[0].type;
                         } else {
                             watchedState.rssForm.error = err.message;
                         }
 
-                        watchedState.rssForm.valid = false;
+                        watchedState.rssForm.valid = STATUS.FAIL;
                     });
             });
 
