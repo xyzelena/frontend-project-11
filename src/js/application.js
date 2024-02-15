@@ -114,7 +114,6 @@ const app = () => {
 
                         const listPosts = createListPosts(parsedData, newFeed.id, postsLinks);
 
-
                         watchedState.loadedFeeds.feeds.unshift(newFeed);
 
                         watchedState.loadedPosts.posts = [...listPosts, ...watchedState.loadedPosts.posts];
