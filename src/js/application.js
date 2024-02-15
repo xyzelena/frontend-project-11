@@ -100,13 +100,9 @@ const app = () => {
                 const feedsLinks = getLinks(watchedState.loadedFeeds.feeds);
 
                 const processingUrl = validateData(watchedState.rssForm.fields, feedsLinks);
-
+                //добавить загрузку !!!!!!!!!!!!!!!!
                 processingUrl
-                    .then((resolvedValue) =>
-                        new Promise((resolve) => {
-                            resolve(getAxiosData(resolvedValue.url));
-                        }))
-
+                    .then((resolvedValue) => getAxiosData(resolvedValue.url))
                     .then((response) => {
                         const statusResponse = response.data.status.http_code;
 
@@ -165,9 +161,7 @@ const app = () => {
 
                     const result = feeds.forEach(({ id, link }) => {
 
-                        const processingLink = new Promise((resolve) => {
-                            resolve(getAxiosData(link));
-                        });
+                        const processingLink = getAxiosData(link);
 
                         processingLink
                             .then((response) => {
