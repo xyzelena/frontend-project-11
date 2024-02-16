@@ -5,7 +5,7 @@ const renderBaseUI = (elements, value, i18n) => {
         const {
             header,
             leadText,
-            placeholderInput,
+            input,
             labelInput,
             btnSubmit,
             exampleUrl,
@@ -15,7 +15,7 @@ const renderBaseUI = (elements, value, i18n) => {
 
         header.textContent = i18n.t('baseTextUI.header');
         leadText.textContent = i18n.t('baseTextUI.leadText');
-        placeholderInput.setAttribute('placeholder', i18n.t('baseTextUI.placeholderInput'));
+        input.setAttribute('placeholder', i18n.t('baseTextUI.placeholderInput'));
         labelInput.textContent = i18n.t('baseTextUI.labelInput');
         btnSubmit.textContent = i18n.t('baseTextUI.btnSubmit');
         exampleUrl.textContent = i18n.t('baseTextUI.exampleUrl');
@@ -30,21 +30,24 @@ const renderStatusRssForm = ({ input, btnSubmit, feedback }, value) => {
             input.setAttribute('disabled', '');
             btnSubmit.setAttribute('disabled', '');
 
-            input.classList.remove('is-invalid', 'is-valid');
-            feedback.classList.remove('invalid-feedback', 'valid-feedback');
+            // input.classList.remove('is-invalid', 'is-valid');
+            // feedback.classList.remove('invalid-feedback', 'valid-feedback');
 
-            feedback.textContent = '';
+            // feedback.textContent = '';
+            feedback.style.display = 'none';
             break;
 
         case 'success':
             input.removeAttribute("disabled");
             btnSubmit.removeAttribute("disabled");
 
+            input.classList.remove('is-invalid');
+            feedback.classList.remove('invalid-feedback');
+
             input.classList.add('is-valid');
             feedback.classList.add('valid-feedback');
 
-            input.classList.remove('is-invalid');
-            feedback.classList.remove('invalid-feedback');
+            feedback.style.display = 'block';
 
             input.value = '';
             input.focus();
@@ -54,24 +57,27 @@ const renderStatusRssForm = ({ input, btnSubmit, feedback }, value) => {
             input.removeAttribute("disabled");
             btnSubmit.removeAttribute("disabled");
 
+            input.classList.remove('is-valid');
+            feedback.classList.remove('valid-feedback');
+
             input.classList.add('is-invalid');
             feedback.classList.add('invalid-feedback');
 
-            input.classList.remove('is-valid');
-            feedback.classList.remove('valid-feedback');
+            feedback.style.display = 'block';
             break;
 
         default:
             input.classList.remove('is-invalid', 'is-valid');
             feedback.classList.remove('invalid-feedback', 'valid-feedback');
             feedback.textContent = '';
+            feedback.style.display = 'none';
             break;
     };
 };
 
 const renderErrors = (feedback, value, i18n) => {
     if (value !== null) {
-        const error = i18n.t(`mistakes.${value}`);
+        const error = i18n.t(`mistakes.${value}`, 'mistakes.networkError'); // как показать ошибку при offline??? 
         feedback.textContent = error;
     }
 };
