@@ -100,9 +100,14 @@ const app = () => {
                 const feedsLinks = getLinks(watchedState.loadedFeeds.feeds);
 
                 const processingUrl = validateData(watchedState.rssForm.fields, feedsLinks);
-                //добавить загрузку !!!!!!!!!!!!!!!!
+
+                //как правильно сделать загрузку данных ??? (интернет медленный, как это отобразить в интерфейсе)
                 processingUrl
-                    .then((resolvedValue) => getAxiosData(resolvedValue.url))
+                    .then((resolvedValue) => {
+                        watchedState.loadingProcess.loadingData.loadingDataUrl = STATUS.LOADING; // ??? 
+
+                        return getAxiosData(resolvedValue.url);
+                    })
                     .then((response) => {
                         const statusResponse = response.data.status.http_code;
 
@@ -128,7 +133,6 @@ const app = () => {
                             watchedState.rssForm.error = err.inner[0].type;
                             watchedState.rssForm.valid = STATUS.FAIL;
                         } else {
-                            //watchedState.rssForm.error = err.message;
                             watchedState.loadingProcess.loadingData.error = err.message;
                             watchedState.loadingProcess.loadingData.loadingDataUrl = STATUS.FAIL;
                         }
