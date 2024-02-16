@@ -24,31 +24,49 @@ const renderBaseUI = (elements, value, i18n) => {
     }
 };
 
-const renderStatusRssForm = (elements, value) => {
-    const input = elements.input;
-    const feedback = elements.feedback;
+const renderStatusRssForm = ({ input, btnSubmit, feedback }, value) => {
+    switch (value) {
+        case 'loading':
+            input.setAttribute('disabled', '');
+            btnSubmit.setAttribute('disabled', '');
 
-    if (value === 'success') {
-        input.classList.remove('is-invalid');
-        feedback.classList.remove('invalid-feedback');
+            input.classList.remove('is-invalid', 'is-valid');
+            feedback.classList.remove('invalid-feedback', 'valid-feedback');
 
-        input.classList.add('is-valid');
-        feedback.classList.add('valid-feedback');
+            feedback.textContent = '';
+            break;
 
-        input.value = '';
-        input.focus();
-    } else if (value === 'fail') {
-        input.classList.remove('is-valid');
-        feedback.classList.remove('valid-feedback');
+        case 'success':
+            input.removeAttribute("disabled");
+            btnSubmit.removeAttribute("disabled");
 
-        input.classList.add('is-invalid');
-        feedback.classList.add('invalid-feedback');
-    } else if (value === 'idle') {
-        input.classList.remove('is-invalid', 'is-valid');
-        feedback.classList.remove('invalid-feedback', 'valid-feedback');
+            input.classList.add('is-valid');
+            feedback.classList.add('valid-feedback');
 
-        feedback.textContent = '';
-    }
+            input.classList.remove('is-invalid');
+            feedback.classList.remove('invalid-feedback');
+
+            input.value = '';
+            input.focus();
+            break;
+
+        case 'fail':
+            input.removeAttribute("disabled");
+            btnSubmit.removeAttribute("disabled");
+
+            input.classList.add('is-invalid');
+            feedback.classList.add('invalid-feedback');
+
+            input.classList.remove('is-valid');
+            feedback.classList.remove('valid-feedback');
+            break;
+
+        default:
+            input.classList.remove('is-invalid', 'is-valid');
+            feedback.classList.remove('invalid-feedback', 'valid-feedback');
+            feedback.textContent = '';
+            break;
+    };
 };
 
 const renderErrors = (feedback, value, i18n) => {
@@ -196,6 +214,7 @@ const renderWatchedListPosts = (listPosts, value) => {
 
 const render = (state, elements, i18n) => (path, value, prevValue) => {
     const input = elements.fields.input;
+    const btnSubmit = elements.baseTextUI.btnSubmit;
     const modal = elements.modalWindow.modal;
     const { baseTextUI, feedback, feeds, posts } = elements;
 
@@ -205,11 +224,11 @@ const render = (state, elements, i18n) => (path, value, prevValue) => {
             break;
 
         case 'rssForm.valid':
-            renderStatusRssForm({ input, feedback }, value);
+            renderStatusRssForm({ input, btnSubmit, feedback }, value);
             break;
 
         case 'loadingProcess.loadingData.loadingDataUrl':
-            renderStatusRssForm({ input, feedback }, value);
+            renderStatusRssForm({ input, btnSubmit, feedback }, value);
             break;
 
         case 'rssForm.error':
