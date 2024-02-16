@@ -14,14 +14,14 @@ import createListPosts from './utils/createListPosts.js';
 const app = () => {
     const elements = {
         baseTextUI: {
-            header: document.querySelector('h1.display-3.mb-0'),
-            leadText: document.querySelector('p.lead'),
-            placeholderInput: document.querySelector('#url-input'),
-            labelInput: document.querySelector('label.visually-hidden'),
-            btnSubmit: document.querySelector('button[type="submit"]'),
-            exampleUrl: document.querySelector('p.mt-4.text-secondary'),
-            footerText: document.querySelector('#footer>span'),
-            footerLink: document.querySelector('#footer>a'),
+            header: document.querySelector('#header'),
+            leadText: document.querySelector('#leadText'),
+            input: document.querySelector('#url-input'),
+            labelInput: document.querySelector('#labelInput'),
+            btnSubmit: document.querySelector('#btnSubmit'),
+            exampleUrl: document.querySelector('#exampleUrl'),
+            footerText: document.querySelector('#footerText'),
+            footerLink: document.querySelector('#footerLink'),
         },
         form: document.querySelector('.rss-form'),
         fields: {
@@ -101,10 +101,9 @@ const app = () => {
 
                 const processingUrl = validateData(watchedState.rssForm.fields, feedsLinks);
 
-                //как правильно сделать загрузку данных ??? (интернет медленный, как это отобразить в интерфейсе)
                 processingUrl
                     .then((resolvedValue) => {
-                        watchedState.loadingProcess.loadingData.loadingDataUrl = STATUS.LOADING; // ??? 
+                        watchedState.loadingProcess.loadingData.loadingDataUrl = STATUS.LOADING;
 
                         return getAxiosData(resolvedValue.url);
                     })
