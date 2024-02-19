@@ -1,6 +1,8 @@
 import i18next from 'i18next';
 import resources from '../locales/index.js';
 
+import * as yup from 'yup';
+
 import onChangeState from './View.js';
 
 import validateData from './utils/validateData.js';
@@ -75,6 +77,15 @@ const app = () => {
         },
     };
 
+    yup.setLocale({
+        mixed: {
+            url: 'url',
+            required: 'required',
+            notOneOf: 'notOneOf',
+            default: 'url',
+        },
+    });
+
     const defaultLanguage = 'ru';
 
     const i18nInstance = i18next.createInstance();
@@ -100,7 +111,7 @@ const app = () => {
 
                 const feedsLinks = getLinks(watchedState.loadedFeeds.feeds);
 
-                const processingUrl = validateData(watchedState.rssForm.fields, feedsLinks);
+                const processingUrl = validateData(watchedState.rssForm.fields, feedsLinks, yup);
 
                 processingUrl
                     .then((resolvedValue) => {
