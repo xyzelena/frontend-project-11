@@ -213,7 +213,7 @@ const renderWatchedListPosts = (listPosts, value) => {
     idWatchedPosts.forEach((idPost) => {
         const linkPost = listPosts.querySelector(`a[data-id='${idPost}']`);
         linkPost.classList.remove('fw-bold');
-        linkPost.classList.add('fw-normal');
+        linkPost.classList.add('fw-normal', 'link-secondary');
     });
 
 };
