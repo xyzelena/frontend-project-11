@@ -5,6 +5,7 @@ import onChangeState from './View.js';
 
 import validateData from './utils/validateData.js';
 import { getLinks } from './utils/utils.js';
+import createUrl from './utils/createUrl.js';
 import getAxiosData from './utils/getAxiosData.js';
 import parseData from './utils/parseData.js';
 import { throwErrorResponse } from './utils/throwErrors.js'
@@ -105,7 +106,9 @@ const app = () => {
                     .then((resolvedValue) => {
                         watchedState.loadingProcess.loadingData.loadingDataUrl = STATUS.LOADING;
 
-                        return getAxiosData(resolvedValue.url);
+                        const url = createUrl(resolvedValue.url);
+
+                        return getAxiosData(url);
                     })
                     .then((response) => {
                         const statusResponse = response.data.status.http_code;
@@ -158,7 +161,9 @@ const app = () => {
                 const postsLinks = getLinks(Object.values(watchedState.loadedPosts.posts));
 
                 const promises = feeds.map(({ id, link }) => {
-                    return getAxiosData(link)
+                    const url = createUrl(link);
+
+                    return getAxiosData(url)
                         .then((response) => {
                             const statusResponse = response.data.status.http_code;
 
