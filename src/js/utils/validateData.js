@@ -1,15 +1,4 @@
-import * as yup from 'yup';
-
-yup.setLocale({
-    mixed: {
-        url: 'url',
-        required: 'required',
-        notOneOf: 'notOneOf',
-        default: 'url',
-    },
-});
-
-const validateData = (url, listLinks) => {
+const validateData = (url, listLinks, yup) => {
     const schema = yup.object().shape({
         url: yup.string()
             .url('url must be correct')
