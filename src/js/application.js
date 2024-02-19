@@ -70,7 +70,7 @@ const app = () => {
         },
         interface: {
             idCurrentWatchedPost: null,
-            idWatchedPosts: [],
+            idWatchedPosts: new Set(),
         },
     };
 
@@ -150,7 +150,7 @@ const app = () => {
 
                 //Update watched posts
                 const idWatchedPosts = watchedState.interface.idWatchedPosts;
-                if (idWatchedPosts.indexOf(idBtnWatchPost) === -1) idWatchedPosts.push(idBtnWatchPost);
+                idWatchedPosts.add(idBtnWatchPost);
             });
 
             const updateListPosts = () => {
