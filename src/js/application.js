@@ -107,8 +107,6 @@ const app = () => {
 
                 watchedState.rssForm.fields.url = input.value.trim();
 
-                const postsLinks = getLinks(Object.values(watchedState.loadedPosts.posts));
-
                 const feedsLinks = getLinks(watchedState.loadedFeeds.feeds);
 
                 const processingUrl = validateData(watchedState.rssForm.fields, feedsLinks, yup);
@@ -129,6 +127,8 @@ const app = () => {
                         const parsedData = parseData(response.data.contents);
 
                         const newFeed = createNewFeed(parsedData, watchedState.rssForm.fields.url);
+
+                        const postsLinks = getLinks(Object.values(watchedState.loadedPosts.posts));
 
                         const listPosts = createListPosts(parsedData, newFeed.id, postsLinks);
 
