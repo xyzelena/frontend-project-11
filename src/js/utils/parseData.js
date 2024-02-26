@@ -3,6 +3,12 @@ const parseData = (rawContents) => {
 
     const parsedData = parser.parseFromString(rawContents, "text/xml");
 
+    const errorNode = parsedData.querySelector('parsererror');
+
+    if (errorNode) {
+        throw new Error('noDataContents');
+    }
+
     return parsedData;
 };
 
