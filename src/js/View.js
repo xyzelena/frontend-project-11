@@ -29,11 +29,6 @@ const renderStatusRssForm = ({ input, btnSubmit, feedback }, value) => {
         case 'loading':
             input.setAttribute('disabled', '');
             btnSubmit.setAttribute('disabled', '');
-
-            // input.classList.remove('is-invalid', 'is-valid');
-            // feedback.classList.remove('invalid-feedback', 'valid-feedback');
-
-            // feedback.textContent = '';
             feedback.style.display = 'none';
             break;
 
@@ -77,7 +72,7 @@ const renderStatusRssForm = ({ input, btnSubmit, feedback }, value) => {
 
 const renderErrors = (feedback, value, i18n) => {
     if (value !== null) {
-        const error = i18n.t(`mistakes.${value}`, 'mistakes.networkError'); // как показать ошибку при offline??? 
+        const error = i18n.t(`mistakes.${value}`);
         feedback.textContent = error;
     }
 };
