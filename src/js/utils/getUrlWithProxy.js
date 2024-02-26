@@ -1,13 +1,10 @@
-const getUrlWithProxy = (link) => {
-    const url = encodeURIComponent(link);
-
+const getUrlWithProxy = (url) => {
     const urlWithProxy = new URL('/get', 'https://allorigins.hexlet.app/');
-    urlWithProxy.searchParams.set('url', url);
     urlWithProxy.searchParams.set('disableCache', 'true');
-
-    console.log(urlWithProxy.toString());
-
+    urlWithProxy.searchParams.set('url', url);
     return urlWithProxy.toString();
 };
 
-export default getUrlWithProxy; 
+export default getUrlWithProxy;
+
+// Documentation: https://github.com/Hexlet/hexlet-allorigins
