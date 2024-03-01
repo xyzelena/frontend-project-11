@@ -141,7 +141,7 @@ const renderListPosts = (idWatchedPosts, listPosts, value, i18n) => {
   ulCard.classList.add('list-group', 'list-group-flush', 'border-0', 'rounded-0');
 
   value.map(({
-    id, idFeed, title, description, link,
+    id, title, link,
   }) => {
     const liCard = document.createElement('li');
     liCard.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start', 'border-0', 'border-end-0');
@@ -190,8 +190,6 @@ const renderModal = (stateLoadedPosts, modal, value, i18n) => {
   const modalTitle = modal.querySelector('.modal-title');
   modalTitle.textContent = currentPost.title;
 
-  const modalBody = modal.querySelector('.modal-body');
-
   const descr = modal.querySelector('.descr');
   descr.textContent = currentPost.description;
 
@@ -213,7 +211,7 @@ const renderWatchedListPosts = (listPosts, value) => {
   });
 };
 
-const render = (state, elements, i18n) => (path, value, prevValue) => {
+const render = (state, elements, i18n) => (path, value) => {
   const { input } = elements.fields;
   const { btnSubmit } = elements.baseTextUI;
   const { modal } = elements.modalWindow;

@@ -1,4 +1,4 @@
-import { getRandomId } from './utils';
+import { getRandomId } from './utils.js';
 
 const findAllPosts = (doc, idFeed) => {
   const items = [...doc.querySelectorAll('item')];

@@ -1,4 +1,4 @@
-import { getRandomId } from './utils';
+import { getRandomId } from './utils.js';
 
 const createNewFeed = (doc, url) => {
   const titleFeed = doc.querySelector('title').textContent;

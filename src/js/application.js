@@ -10,7 +10,7 @@ import { getLinks } from './utils/utils.js';
 import getUrlWithProxy from './utils/getUrlWithProxy.js';
 import getAxiosData from './utils/getAxiosData.js';
 import parseData from './utils/parseData.js';
-import { throwErrorResponse } from './utils/throwErrors.js';
+import throwErrorResponse from './utils/throwErrors.js';
 import createNewFeed from './utils/createNewFeed.js';
 import createListPosts from './utils/createListPosts.js';
 
@@ -185,7 +185,7 @@ const app = () => {
 
               watchedState.loadedPosts.posts = [...listPosts, ...watchedState.loadedPosts.posts];
             })
-            .catch((err) => { });
+            .catch(() => { });
         });
 
         Promise.all(promises)

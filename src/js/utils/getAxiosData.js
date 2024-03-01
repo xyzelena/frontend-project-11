@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const getAxiosData = (url) => axios.get(url)
-  .catch((error) => {
+  .catch(() => {
     throw new Error('networkError');
   });
 
