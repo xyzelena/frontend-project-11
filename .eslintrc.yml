@@ -1,14 +1,10 @@
-plugins:
-  - jest
-
 env:
   browser: true
   node: true
   es2021: true
 
 extends: 
-  - 'airbnb-base'
-  - 'plugin:jest/recommended'
+  - 'airbnb-base' 
 
 overrides: []
 
