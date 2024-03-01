@@ -1,15 +1,15 @@
 const parseData = (rawContents) => {
-    const parser = new DOMParser();
+  const parser = new DOMParser();
 
-    const parsedData = parser.parseFromString(rawContents, "text/xml");
+  const parsedData = parser.parseFromString(rawContents, 'text/xml');
 
-    const errorNode = parsedData.querySelector('parsererror');
+  const errorNode = parsedData.querySelector('parsererror');
 
-    if (errorNode) {
-        throw new Error('noDataContents');
-    }
+  if (errorNode) {
+    throw new Error('noDataContents');
+  }
 
-    return parsedData;
+  return parsedData;
 };
 
-export default parseData; 
+export default parseData;

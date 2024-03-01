@@ -2,10 +2,10 @@ const path = require('path');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
-const TerserPlugin = require("terser-webpack-plugin");
-//const CopyPlugin = require("copy-webpack-plugin");
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
+// const CopyPlugin = require("copy-webpack-plugin");
 
 const isProduction = process.env.NODE_ENV == 'production';
 
@@ -13,16 +13,16 @@ const config = {
   mode: process.env.NODE_ENV || 'development',
   entry: path.resolve(__dirname, './src/js/main.js'),
   output: {
-    filename: "[name].[contenthash].js",
+    filename: '[name].[contenthash].js',
     path: path.resolve(__dirname, './dist/'),
     clean: true,
   },
   devServer: {
     host: 'localhost',
-    port: 5000, 
+    port: 5000,
     open: true,
-    hot: true, 
-    //static: path.resolve(__dirname, './dist/'),    
+    hot: true,
+    // static: path.resolve(__dirname, './dist/'),
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -30,7 +30,7 @@ const config = {
     }),
 
     new MiniCssExtractPlugin({
-      filename: "[name].[contenthash].css",
+      filename: '[name].[contenthash].css',
     }),
 
     // new CopyPlugin({
@@ -56,7 +56,7 @@ const config = {
       },
       {
         test: /\.css$/,
-        use: [MiniCssExtractPlugin.loader, "css-loader"],
+        use: [MiniCssExtractPlugin.loader, 'css-loader'],
       },
       {
         test: /\.scss$/,
@@ -65,9 +65,9 @@ const config = {
           // "style-loader",
           MiniCssExtractPlugin.loader,
           // Translates CSS into CommonJS
-          "css-loader",
+          'css-loader',
           // Compiles Sass to CSS
-          "sass-loader",
+          'sass-loader',
         ],
       },
       // {
@@ -94,8 +94,6 @@ const config = {
 module.exports = () => {
   if (isProduction) {
     config.mode = 'production';
-
-
   } else {
     config.mode = 'development';
   }

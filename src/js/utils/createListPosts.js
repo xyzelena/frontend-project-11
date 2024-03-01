@@ -1,35 +1,35 @@
-import { getRandomId } from "./utils";
+import { getRandomId } from './utils';
 
 const findAllPosts = (doc, idFeed) => {
-    const items = [...doc.querySelectorAll('item')];
+  const items = [...doc.querySelectorAll('item')];
 
-    const posts = items.map((item) => {
-        const titlePost = item.querySelector('title').textContent;
-        const descriptionPost = item.querySelector('description').textContent;
-        const linkPost = item.querySelector('link').textContent;
+  const posts = items.map((item) => {
+    const titlePost = item.querySelector('title').textContent;
+    const descriptionPost = item.querySelector('description').textContent;
+    const linkPost = item.querySelector('link').textContent;
 
-        const post = {
-            id: getRandomId(),
-            idFeed,
-            title: titlePost,
-            description: descriptionPost,
-            link: linkPost,
-        };
+    const post = {
+      id: getRandomId(),
+      idFeed,
+      title: titlePost,
+      description: descriptionPost,
+      link: linkPost,
+    };
 
-        return post;
-    });
+    return post;
+  });
 
-    return posts;
+  return posts;
 };
 
 const createListPosts = (doc, idFeed, postsLinks) => {
-    const newPosts = findAllPosts(doc, idFeed);
+  const newPosts = findAllPosts(doc, idFeed);
 
-    if (postsLinks.length === 0) return newPosts;
+  if (postsLinks.length === 0) return newPosts;
 
-    const uniqPosts = newPosts.filter(({ link }) => !postsLinks.includes(link));
+  const uniqPosts = newPosts.filter(({ link }) => !postsLinks.includes(link));
 
-    return uniqPosts;
+  return uniqPosts;
 };
 
-export default createListPosts; 
+export default createListPosts;
