@@ -25,11 +25,14 @@ const renderBaseUI = (elements, value, i18n) => {
 };
 
 const renderStatusRssForm = ({ input, btnSubmit, feedback }, value) => {
+  const inputField = input;
+  const feedbackField = feedback;
+
   switch (value) {
     case 'loading':
       input.setAttribute('disabled', '');
       btnSubmit.setAttribute('disabled', '');
-      feedback.style.display = 'none';
+      feedbackField.style.display = 'none';
       break;
 
     case 'success':
@@ -42,9 +45,9 @@ const renderStatusRssForm = ({ input, btnSubmit, feedback }, value) => {
       input.classList.add('is-valid');
       feedback.classList.add('valid-feedback');
 
-      feedback.style.display = 'block';
+      feedbackField.style.display = 'block';
 
-      input.value = '';
+      inputField.value = '';
       input.focus();
       break;
 
@@ -58,31 +61,35 @@ const renderStatusRssForm = ({ input, btnSubmit, feedback }, value) => {
       input.classList.add('is-invalid');
       feedback.classList.add('invalid-feedback');
 
-      feedback.style.display = 'block';
+      feedbackField.style.display = 'block';
       break;
 
     default:
       input.classList.remove('is-invalid', 'is-valid');
       feedback.classList.remove('invalid-feedback', 'valid-feedback');
-      feedback.textContent = '';
-      feedback.style.display = 'none';
+      feedbackField.textContent = '';
+      feedbackField.style.display = 'none';
       break;
   }
 };
 
 const renderErrors = (feedback, value, i18n) => {
+  const feedbackField = feedback;
+
   if (value !== null) {
     const error = i18n.t(`mistakes.${value}`);
-    feedback.textContent = error;
+    feedbackField.textContent = error;
   }
 };
 
 const renderFeedbackLoadedFeeds = (feedback, i18n) => {
-  feedback.textContent = i18n.t('confirmation.loaded');
+  const feedbackField = feedback;
+  feedbackField.textContent = i18n.t('confirmation.loaded');
 };
 
 const renderListFeeds = (listFeeds, value, i18n) => {
-  listFeeds.textContent = '';
+  const listFeedsField = listFeeds;
+  listFeedsField.textContent = '';
 
   const divCard = document.createElement('div');
   divCard.classList.add('card', 'border-0');
@@ -100,7 +107,7 @@ const renderListFeeds = (listFeeds, value, i18n) => {
   const ulCard = document.createElement('ul');
   ulCard.classList.add('list-group', 'list-group-flush', 'border-0', 'rounded-0');
 
-  value.map(({ title, description }) => {
+  value.forEach(({ title, description }) => {
     const liCard = document.createElement('li');
     liCard.classList.add('list-group-item', 'border-0', 'border-end-0');
 
@@ -122,7 +129,8 @@ const renderListFeeds = (listFeeds, value, i18n) => {
 };
 
 const renderListPosts = (idWatchedPosts, listPosts, value, i18n) => {
-  listPosts.textContent = '';
+  const listPostsField = listPosts;
+  listPostsField.textContent = '';
 
   const divCard = document.createElement('div');
   divCard.classList.add('card', 'border-0');
@@ -140,7 +148,7 @@ const renderListPosts = (idWatchedPosts, listPosts, value, i18n) => {
   const ulCard = document.createElement('ul');
   ulCard.classList.add('list-group', 'list-group-flush', 'border-0', 'rounded-0');
 
-  value.map(({
+  value.forEach(({
     id, title, link,
   }) => {
     const liCard = document.createElement('li');
