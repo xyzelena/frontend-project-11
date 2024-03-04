@@ -113,6 +113,8 @@ const app = () => {
         processingUrl
           .then((resolvedValue) => {
             watchedState.loadingProcess.loadingData.loadingDataUrl = STATUS.LOADING;
+            watchedState.rssForm.error = null;
+            watchedState.rssForm.valid = STATUS.LOADING;
 
             const url = getUrlWithProxy(resolvedValue.url);
 
