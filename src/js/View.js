@@ -30,8 +30,11 @@ const renderStatusRssForm = ({ input, btnSubmit, feedback }, value) => {
 
   switch (value) {
     case 'loading':
-      input.setAttribute('disabled', '');
       btnSubmit.setAttribute('disabled', '');
+      input.setAttribute('disabled', '');
+      input.classList.remove('is-invalid', 'is-valid');
+      feedback.classList.remove('invalid-feedback', 'valid-feedback');
+      feedbackField.textContent = '';
       feedbackField.style.display = 'none';
       break;
 
