@@ -162,7 +162,6 @@ const renderListPosts = (idWatchedPosts, listPosts, value, i18n) => {
     linkPost.dataset.id = id;
     linkPost.setAttribute('target', '_blank');
     linkPost.setAttribute('rel', 'noopener noreferrer');
-    linkPost.classList.add('link-offset-2', 'link-offset-3-hover', 'link-underline', 'link-underline-opacity-0', 'link-underline-opacity-75-hover');
     linkPost.classList.add('fw-bold');
     linkPost.textContent = title;
 
