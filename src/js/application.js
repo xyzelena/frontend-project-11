@@ -121,9 +121,7 @@ const app = () => {
             return getAxiosData(url);
           })
           .then((response) => {
-            const statusResponse = response.data.status.http_code;
-
-            throwErrorResponse(statusResponse);
+            throwErrorResponse(response.status);
 
             const parsedData = parseData(response.data.contents);
 
@@ -177,9 +175,7 @@ const app = () => {
 
           return getAxiosData(url)
             .then((response) => {
-              const statusResponse = response.data.status.http_code;
-
-              throwErrorResponse(statusResponse);
+              throwErrorResponse(response.status);
 
               const parsedData = parseData(response.data.contents);
 
