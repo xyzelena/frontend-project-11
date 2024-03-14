@@ -20,7 +20,7 @@ Link in [Vercel](https://frontend-project-11-psi-blue.vercel.app/)
 * Styling using Bootstrap — html/css framework;
 * Working with DOM API, asynchronous requests using axios;
 * Using the Yup library for data validation;
-* Internationalisation framework i18next; 
+* Using an internationalisation framework i18next; 
 * State management of the application (using the on-change library); 
 * Building a project architecture (MVC); 
 
