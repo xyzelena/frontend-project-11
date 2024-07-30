@@ -28,7 +28,9 @@ __Stack:__ JavaScript, Bootstrap, ESLint, GitHub Actions (CI), Webpack, Yup, on-
 
 ## Run the project locally:
 
-* Make sure that you have node.js and npm installed.
+* Git clone this repository to your computer;
+
+* Make sure that you have node.js and npm installed;
   
 * Install dependencies and let your system run the package:
 ```bash
