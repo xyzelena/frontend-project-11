@@ -10,7 +10,7 @@ RSS is a specialised format designed to describe news feeds, article announcemen
 
 This project "RSS Reader" is a service for aggregating RSS feeds, with the help of which it is convenient to read a variety of sources, such as blogs. It allows you to add an unlimited number of RSS feeds, updates them itself and adds new entries to the common stream.
 
-Link in [Vercel](https://frontend-project-11-psi-blue.vercel.app/)
+Link in [RSS Reader](https://frontend-project-11-psi-blue.vercel.app/)
 
 ## The project included:
 
